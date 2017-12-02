@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    <script src="./dist/board-core.js"></script>
+    <script src="./dist/a.js"></script>
+    <script>
+        var m;
+        window.onload = function() {
+            m = new boardCore.default;
+        }
+        function setBoardSize() {
+            var x = document.getElementById("xpos").value;
+            var y = document.getElementById("ypos").value;
+            m.setSize(x,y);
+        }
+    </script>
+</head>
+
+<body>
+    <form>
+        <input type="text" placeholder="x" id="xpos"/>
+        <input type="text" placeholder="y" id="ypos"/>
+        <input type="button" style="font-size: 30px" value="Confirm" onclick="setBoardSize()" />
+    </form>
+    <label id="num"></label>
+</body>
+
+</html>
