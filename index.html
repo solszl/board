@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    <script src="./dist/board-core.js"></script>
+    <script>
+        var m;
+        window.onload = function () {
+            m = new boardCore.default(root);
+        }
+        function setBoardSize() {
+            var x = document.getElementById("xpos").value;
+            var y = document.getElementById("ypos").value;
+            m.setSize(x, y);
+        }
+
+        function setBackgroundColor() {
+            var color = document.getElementById("bgColor").value;
+            m.setBackgroundColor(color);
+        }
+
+        function setPencilOption() {
+            var color = colorPicker.value;
+            var size = cbbPenSize.value;
+        }
+
+        function setEraseOption() {
+
+        }
+
+        function undo() {
+
+        }
+
+        function redo() {
+
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <input type="text" placeholder="x" id="xpos" />
+        <input type="text" placeholder="y" id="ypos" />
+        <input type="button" style="font-size: 20px" value="Confirm" onclick="setBoardSize()" />
+    </div>
+    <div>
+        <input type="text" id="bgColor" />
+        <input type="button" style="font-size: 20px" value="Confirm" onclick="setBackgroundColor()" />
+    </div>
+    <div>
+        <label>画笔宽度：</label>
+        <select id="cbbPenSize">
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+        <label>颜色：</label>
+        <input type="color" id="penColorPicker" />
+        <input type="button" style="font-size: 20px" value="Confirm" onclick="setPencilOption()" />
+    </div>
+    <div>
+        <label>橡皮擦宽度</label>
+        <select id="cbbEraseSize">
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+        <input type="button" style="font-size: 20px" value="Confirm" onclick="setEraseOption()" />
+    </div>
+    <div>
+        <label>字号</label>
+        <select id="cbbFontSize">
+            <option value="12">12</option>
+            <option value="16">16</option>
+            <option value="20">20</option>
+            <option value="24">24</option>
+            <option value="28">28</option>
+            <option value="32">32</option>
+            <option value="36">36</option>
+        </select>
+        <label>颜色：</label>
+        <input type="color" id="fontColorPicker" />
+        <label>内容：</label>
+        <input type="text" />
+        <input type="button" style="font-size: 20px" value="Confirm" onclick="setEraseOption()" />
+    </div>
+    <div>
+        <input type="button" style="font-size: 20px" value="undo" onclick="undo()" />
+        <input type="button" style="font-size: 20px" value="redo" onclick="redo()" />
+    </div>
+    <div>
+        <canvas id="root" width="600" height="500"></canvas>
+    </div>
+</body>
+
+</html>
