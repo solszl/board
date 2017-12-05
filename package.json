@@ -9,12 +9,15 @@
   },
   "devDependencies": {
     "@types/webpack": "^3.8.1",
+    "concurrently": "^3.5.1",
+    "lite-server": "^2.3.0",
     "ts-loader": "^3.2.0",
     "typescript": "^2.6.2",
     "webpack": "^3.9.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently \"webpack -w\" \"npm run lite\"",
+    "lite": "lite-server"
   },
   "author": "",
   "license": "ISC"

@@ -4,6 +4,7 @@ export default class Main {
 
     root: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
+    md: (e:MouseEvent) => void;
     /**
      * 构造函数。传入canvas
      * @param {HTMLCanvasElement} e 
@@ -19,7 +20,9 @@ export default class Main {
         console.log(this);
         this.root = e;
         this.ctx = this.root.getContext("2d") as CanvasRenderingContext2D;
-        this.root.addEventListener("mousedown", this.onMouseDownHandler.bind(this));
+        this.md = this.onMouseDownHandler;
+        console.log("aaa");
+        this.root.addEventListener("mousedown", this.md);
     }
 
     /**
@@ -73,8 +76,11 @@ export default class Main {
     }
 
     private onMouseDownHandler(e: MouseEvent): void {
-        console.log(this);
-        this.root.removeEventListener("mousedown", this.onMouseDownHandler);
+        console.log(this,e.target);
+
+        this.root.removeEventListener("mousedown", this.md);
+
+        console.log("aaa");
         // this.root.removeEventListener("mousedown", this.onMouseDownHandler);
         // this.root.addEventListener("mousemove", this.onMouseMoveHandler);
         // this.root.addEventListener("mouseup", this.onMouseUpHandler);
