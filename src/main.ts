@@ -3,6 +3,7 @@ import PenCommand from './cmd/penCommand';
 import BoardOption from "./cmd/option";
 import ClearCommand from './cmd/clearCommand';
 import { AbstractCommand } from './cmd/absCommand';
+import EraserCommand from './cmd/eraserCommand';
 export default class Main {
 
     root: HTMLCanvasElement;
@@ -58,7 +59,12 @@ export default class Main {
     }
 
     setErase(): void {
-
+        if (this.currentCMD) {
+            this.currentCMD.complete();
+        }
+        var cmd: EraserCommand = new EraserCommand(this.root);
+        cmd.opt = this.opt;
+        cmd.execute();
     }
 
     setText(): void {

@@ -1,36 +1,31 @@
 import { AbstractCommand } from "./absCommand";
-import { Point } from "../interfaces";
-/**
- *  画笔工具
- * 
- * @export
- * @class PenCommand
- * @extends {AbstractCommand}
- */
-export default class PenCommand extends AbstractCommand {
+
+export default class EraserCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {
         super(root);
-        this.type = "pen_command";
-    }
-
-    execute(): void {
-        super.execute();
-        if (this.opt === null || this.opt === undefined)
-            return;
-
-        this.md = this.onMouseDownHandler.bind(this);
-        this.mm = this.onMouseMovehandler.bind(this);
-        this.mu = this.onMouseUpHandler.bind(this);
-        this.bindEvents();
     }
 
     // 声明几个函数
     private md: (e: MouseEvent) => {};
     private mm: (e: MouseEvent) => {};
     private mu: (e: MouseEvent) => {};
+
+    execute() {
+        if (this.opt === null || this.opt === undefined)
+            return;
+        this.md = this.onMouseDownHandler.bind(this);
+        this.mm = this.onMouseMovehandler.bind(this);
+        this.mu = this.onMouseUpHandler.bind(this);
+        this.bindEvents();
+    }
+
+    complete() {
+        super.complete();
+        this.unbindEvents();
+    }
+
     // 注册鼠标事件
     private bindEvents(): void {
-        console.log(this);
         this.root.addEventListener("mousedown", this.md);
     }
 
@@ -41,15 +36,12 @@ export default class PenCommand extends AbstractCommand {
         this.root.removeEventListener("mouseup", this.mu);
     }
 
-    private startPos: Point;
-    private endPos: Point;
     private onMouseDownHandler(e: MouseEvent): void {
         // 鼠标按下的时候，移除down，添加move 和 up 监听
         // 鼠标抬起的时候，移除move 和 up， 添加down监听，保证同时只有一个监听事件
         this.root.removeEventListener("mousedown", this.md);
         this.root.addEventListener("mousemove", this.mm);
         this.root.addEventListener("mouseup", this.mu);
-        this.startPos = new Point(e.layerX, e.layerY);
         // 设置线条宽度
         this.ctx.lineWidth = this.opt.size;
         // 设置颜色
@@ -58,10 +50,8 @@ export default class PenCommand extends AbstractCommand {
         this.ctx.lineCap = "round";
         // 设置拐点样式
         this.ctx.lineJoin = "round";
-        // 像素叠加属性 from:https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
-        this.ctx.globalCompositeOperation = "source-over";
+        this.ctx.globalCompositeOperation = "destination-out";
         this.ctx.beginPath();
-        this.ctx.moveTo(this.startPos.x, this.startPos.y);
     }
 
     private onMouseMovehandler(e: MouseEvent): void {
@@ -73,11 +63,5 @@ export default class PenCommand extends AbstractCommand {
         this.root.removeEventListener("mousemove", this.mm);
         this.root.removeEventListener("mouseup", this.mu);
         this.root.addEventListener("mousedown", this.md);
-        this.endPos = new Point(e.layerX, e.layerY);
-    }
-
-    complete() {
-        super.complete();
-        this.unbindEvents();
     }
 }

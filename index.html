@@ -24,12 +24,14 @@
         function setPencilOption() {
             var color = penColorPicker.value;
             var size = cbbPenSize.value;
-            m.setBoardOption(color,size,"");
+            m.setBoardOption(color, size, "");
             m.setPencil();
         }
 
         function setEraseOption() {
-
+            var size = cbbEraseSize.value;
+            m.setBoardOption("", size, "");
+            m.setErase();
         }
 
         function undo() {
@@ -46,7 +48,7 @@
         }
 
         function setJSONData(str) {
-            var str =txtData.value;
+            var str = txtData.value;
             m.setBoardData(str);
         }
     </script>
@@ -82,15 +84,10 @@
     <div>
         <label>橡皮擦宽度</label>
         <select id="cbbEraseSize">
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
+            <option value="16">16</option>
             <option value="12">12</option>
+            <option value="8">8</option>
+            <option value="4">4</option>
         </select>
         <input type="button" style="font-size: 20px" value="Confirm" onclick="setEraseOption()" />
     </div>
@@ -117,7 +114,7 @@
         <input type="button" style="font-size: 20px" value="clear" onclick="clearBoard()" />
     </div>
     <div>
-        <input type="text" id="txtData"/>
+        <input type="text" id="txtData" />
         <input type="button" style="font-size: 20px" value="Confirm" onclick="setJSONData()" />
     </div>
     <div>
