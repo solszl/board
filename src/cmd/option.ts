@@ -9,7 +9,7 @@ class BoardOption {
      * @type {string}
      * @memberof BoardOption
      */
-    color:string;
+    color: string;
 
     /**
      * 大小，画笔大小，橡皮擦大小
@@ -17,7 +17,7 @@ class BoardOption {
      * @type {number}
      * @memberof BoardOption
      */
-    size:number;
+    size: number;
 
     /**
      * 内容
@@ -25,7 +25,11 @@ class BoardOption {
      * @type {string}
      * @memberof BoardOption
      */
-    content:string;
+    content: string;
+
+    toString(): string {
+        return `color:${ this.color }, size:${ this.size }, content:${ this.content }`;
+    }
 }
 
 export default BoardOption;

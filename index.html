@@ -22,8 +22,10 @@
         }
 
         function setPencilOption() {
-            var color = colorPicker.value;
+            var color = penColorPicker.value;
             var size = cbbPenSize.value;
+            m.setBoardOption(color,size,"");
+            m.setPencil();
         }
 
         function setEraseOption() {
@@ -36,6 +38,16 @@
 
         function redo() {
 
+        }
+
+        function clearBoard() {
+            console.log("aaa");
+            m.clearBoard();
+        }
+
+        function setJSONData(str) {
+            var str =txtData.value;
+            m.setBoardData(str);
         }
     </script>
 </head>
@@ -102,6 +114,11 @@
     <div>
         <input type="button" style="font-size: 20px" value="undo" onclick="undo()" />
         <input type="button" style="font-size: 20px" value="redo" onclick="redo()" />
+        <input type="button" style="font-size: 20px" value="clear" onclick="clearBoard()" />
+    </div>
+    <div>
+        <input type="text" id="txtData"/>
+        <input type="button" style="font-size: 20px" value="Confirm" onclick="setJSONData()" />
     </div>
     <div>
         <canvas id="root" width="600" height="500"></canvas>
