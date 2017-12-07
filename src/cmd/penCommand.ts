@@ -30,7 +30,6 @@ export default class PenCommand extends AbstractCommand {
     private mu: (e: MouseEvent) => {};
     // 注册鼠标事件
     private bindEvents(): void {
-        console.log(this);
         this.root.addEventListener("mousedown", this.md);
     }
 

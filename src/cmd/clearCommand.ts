@@ -10,11 +10,11 @@ import { AbstractCommand } from "./absCommand";
 export default class ClearCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {
         super(root);
+        this.type = "clear_command";
     }
 
     execute() {
         super.execute();
         this.ctx.clearRect(0, 0, this.root.width, this.root.height);
-        console.log("clear board");
     }
 }

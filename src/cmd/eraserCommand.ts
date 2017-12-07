@@ -3,6 +3,7 @@ import { AbstractCommand } from "./absCommand";
 export default class EraserCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {
         super(root);
+        this.type = "eraser_command";
     }
 
     // 声明几个函数
@@ -22,6 +23,7 @@ export default class EraserCommand extends AbstractCommand {
     complete() {
         super.complete();
         this.unbindEvents();
+        this.ctx.globalCompositeOperation = "source-over";
     }
 
     // 注册鼠标事件

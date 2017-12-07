@@ -43,13 +43,20 @@
         }
 
         function clearBoard() {
-            console.log("aaa");
             m.clearBoard();
         }
 
         function setJSONData(str) {
             var str = txtData.value;
             m.setBoardData(str);
+        }
+
+        function setTextOption() {
+            var color = fontColorPicker.value;
+            var size = cbbFontSize.value;
+            var content = txtContent.value;
+            m.setBoardOption(color, size, content);
+            m.setText();
         }
     </script>
 </head>
@@ -105,8 +112,8 @@
         <label>颜色：</label>
         <input type="color" id="fontColorPicker" />
         <label>内容：</label>
-        <input type="text" />
-        <input type="button" style="font-size: 20px" value="Confirm" onclick="setEraseOption()" />
+        <input type="text" id="txtContent" />
+        <input type="button" style="font-size: 20px" value="Confirm" onclick="setTextOption()" />
     </div>
     <div>
         <input type="button" style="font-size: 20px" value="undo" onclick="undo()" />

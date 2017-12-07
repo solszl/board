@@ -4,6 +4,7 @@ import BoardOption from "./cmd/option";
 import ClearCommand from './cmd/clearCommand';
 import { AbstractCommand } from './cmd/absCommand';
 import EraserCommand from './cmd/eraserCommand';
+import TextCommand from './cmd/textCommand';
 export default class Main {
 
     root: HTMLCanvasElement;
@@ -63,12 +64,20 @@ export default class Main {
             this.currentCMD.complete();
         }
         var cmd: EraserCommand = new EraserCommand(this.root);
+        this.currentCMD = cmd;
         cmd.opt = this.opt;
         cmd.execute();
     }
 
     setText(): void {
+        if (this.currentCMD) {
+            this.currentCMD.complete();
+        }
 
+        var cmd: TextCommand = new TextCommand(this.root);
+        this.currentCMD = cmd;
+        cmd.opt = this.opt;
+        cmd.execute();
     }
 
     saveAsBitmap(): void {
