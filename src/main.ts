@@ -19,7 +19,7 @@ export default class Main {
      * @memberof Main
      */
     constructor(e: HTMLCanvasElement) {
-        if (e === null || e === undefined) {
+        if (!!!e) {
             console.log("root node is null");
             return;
         }
@@ -56,10 +56,10 @@ export default class Main {
         // var o: any = JSON.parse(data);
         // var type: string = o['type'];
         // var path: Array<Point> = [];
-        // // Array<Point>(o['path']).every((val, idx, arr) => {
-        // //     path.push(Point.from(arr[idx]));
-        // //     return true;
-        // // });
+        // Array<Point>(o['path']).every((val, idx, arr) => {
+        //     path.push(Point.from(arr[idx]));
+        //     return true;
+        // });
         // // console.log(o.path);
         CommandManager.getInstance().execute(CommandEnum.PEN, this.root, this.opt);
     }
@@ -77,7 +77,7 @@ export default class Main {
     }
 
     clearAll(): void {
-
+        CommandManager.getInstance().execute(CommandEnum.CLEAR, this.root, this.opt);
     }
 
     undo(): void {
