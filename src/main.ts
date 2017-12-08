@@ -51,18 +51,6 @@ export default class Main {
     }
 
     setPencil(): void {
-        // {"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}
-        var data: string = '{"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}';
-        var o: any = JSON.parse(data);
-        var type: string = o['type'];
-        var arr: Array<any> = o['path'];
-        var path: Array<Point> = [];
-        arr.forEach((val, idx, arr) => {
-            path.push(Point.from(val));
-        });
-
-        console.log(path.length);
-
         CommandManager.getInstance().execute(CommandEnum.PEN, this.root, this.opt);
     }
 
@@ -106,7 +94,5 @@ export default class Main {
         this.opt.color = color;
         this.opt.size = size;
         this.opt.content = content;
-
-        dispatchEvent(new Event("aaaa"));
     }
 }

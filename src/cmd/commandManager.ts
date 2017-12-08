@@ -15,7 +15,7 @@ class CommandManager {
     }
 
     static getInstance(): CommandManager {
-        if (this.instance === null || this.instance === undefined)
+        if (!!!this.instance)
             this.instance = new CommandManager();
 
         return this.instance;

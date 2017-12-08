@@ -22,37 +22,14 @@ export default class PenCommand extends AbstractCommand {
         if (!!!this.opt)
             return;
 
-        this.md = this.onMouseDownHandler.bind(this);
-        this.mm = this.onMouseMovehandler.bind(this);
-        this.mu = this.onMouseUpHandler.bind(this);
         this.bindEvents();
-    }
-
-    // 声明几个函数
-    private md: (e: MouseEvent) => {};
-    private mm: (e: MouseEvent) => {};
-    private mu: (e: MouseEvent) => {};
-    // 注册鼠标事件
-    private bindEvents(): void {
-        this.root.addEventListener("mousedown", this.md);
-    }
-
-    // 移除鼠标事件
-    private unbindEvents(): void {
-        this.root.removeEventListener("mousedown", this.md);
-        this.root.removeEventListener("mousemove", this.mm);
-        this.root.removeEventListener("mouseup", this.mu);
     }
 
     private startPos: Point;
     private endPos: Point;
-    private onMouseDownHandler(e: MouseEvent): void {
+    protected onMouseDownHandler(e: MouseEvent): void {
+        super.onMouseDownHandler(e);
         this.path = [];
-        // 鼠标按下的时候，移除down，添加move 和 up 监听
-        // 鼠标抬起的时候，移除move 和 up， 添加down监听，保证同时只有一个监听事件
-        this.root.removeEventListener("mousedown", this.md);
-        this.root.addEventListener("mousemove", this.mm);
-        this.root.addEventListener("mouseup", this.mu);
         this.startPos = new Point(e.layerX, e.layerY);
         // 设置线条宽度
         this.ctx.lineWidth = this.opt.size;
@@ -69,24 +46,21 @@ export default class PenCommand extends AbstractCommand {
         this.path.push(new Point(this.startPos.x, this.startPos.y));
     }
 
-    private onMouseMovehandler(e: MouseEvent): void {
+    protected onMouseMovehandler(e: MouseEvent): void {
+        super.onMouseMovehandler(e);
         this.ctx.lineTo(e.layerX, e.layerY);
         this.ctx.stroke();
         this.path.push(new Point(e.layerX, e.layerY));
     }
 
-    private onMouseUpHandler(e: MouseEvent): void {
-        this.root.removeEventListener("mousemove", this.mm);
-        this.root.removeEventListener("mouseup", this.mu);
-        this.root.addEventListener("mousedown", this.md);
+    protected onMouseUpHandler(e: MouseEvent): void {
+        super.onMouseUpHandler(e);
         this.endPos = new Point(e.layerX, e.layerY);
         this.path.push(this.endPos);
-        this.toJSON();
     }
 
     complete() {
         super.complete();
-        this.unbindEvents();
         this.path = [];
     }
 
@@ -94,11 +68,17 @@ export default class PenCommand extends AbstractCommand {
         this.data["path"] = this.path;
         this.data["opt"] = this.opt;
         var s: string = JSON.stringify(this.data);
-        console.log(s, this.data['type']);
         return JSON.stringify(this.data);
     }
 
     fromJSON(data: string) {
         //{"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}
+        var o: any = JSON.parse(data);
+        var type: string = o['type'];
+        var arr: Array<any> = o['path'];
+        var p: Array<Point> = [];
+        arr.forEach((val, idx, arr) => {
+            p.push(Point.from(val));
+        });
     }
 }
