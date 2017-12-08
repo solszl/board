@@ -12,7 +12,11 @@ export class Point {
         return dis;
     }
 
+    static from(val: any): Point {
+        return new Point(val.x, val.y);
+    }
+
     toString(): string {
-        return `[x: ${this.x}, y: ${this.y}]`;
+        return `{x: ${this.x}, y: ${this.y}}`;
     }
 }

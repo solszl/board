@@ -1,13 +1,15 @@
 import { AbstractCommand } from "./absCommand";
 import { IUndoableCommand } from "./cmdInterface";
+import { CommandFactory } from "./cmdFactory";
+import BoardOption from "./option";
 
 class CommandManager {
 
     private static instance: CommandManager;
 
-    private static MAX_COUNT:number = 10;
+    private static MAX_COUNT: number = 10;
 
-    stack:Array<IUndoableCommand>;
+    stack: Array<IUndoableCommand>;
 
     constructor() {
     }
@@ -19,14 +21,17 @@ class CommandManager {
         return this.instance;
     }
 
-
     currentCMD: AbstractCommand;
-
-    execute(): void {
-        if (this.currentCMD === null || this.currentCMD === undefined)
-            return;
-
+    lastCMD: AbstractCommand;
+    execute(type: string, root: HTMLCanvasElement, opt: BoardOption): void {
+        if (!!this.lastCMD) {
+            this.lastCMD.complete();
+        }
+        this.currentCMD = CommandFactory.getCommand(type, root);
+        this.currentCMD.opt = opt;
         this.currentCMD.execute();
+
+        this.lastCMD = this.currentCMD;
     }
 
     undo() {
@@ -38,7 +43,7 @@ class CommandManager {
     }
 
 
-    private turncate(stack:Array<IUndoableCommand>):void {
+    private turncate(stack: Array<IUndoableCommand>): void {
 
     }
 }

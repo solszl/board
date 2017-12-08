@@ -1,4 +1,5 @@
 import { AbstractCommand } from "./absCommand";
+import { CommandEnum } from "./CommandEnum";
 
 /**
  * 清空面板操作
@@ -10,7 +11,7 @@ import { AbstractCommand } from "./absCommand";
 export default class ClearCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {
         super(root);
-        this.type = "clear_command";
+        this.type = CommandEnum.CLEAR;
     }
 
     execute() {

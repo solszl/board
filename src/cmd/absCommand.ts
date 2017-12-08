@@ -5,9 +5,11 @@ import { isNullOrUndefined } from "util";
 export abstract class AbstractCommand implements IUndoableCommand {
     ctx: CanvasRenderingContext2D;
     root: HTMLCanvasElement;
+    data: any;
     constructor(root: HTMLCanvasElement) {
         this.root = root;
         this.ctx = this.root.getContext("2d") as CanvasRenderingContext2D;
+        this.data = {};
     }
     type: string;
 

@@ -1,9 +1,10 @@
 import { AbstractCommand } from "./absCommand";
+import { CommandEnum } from "./CommandEnum";
 
 export default class EraserCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {
         super(root);
-        this.type = "eraser_command";
+        this.type = CommandEnum.EARSER;
     }
 
     // 声明几个函数
@@ -12,7 +13,7 @@ export default class EraserCommand extends AbstractCommand {
     private mu: (e: MouseEvent) => {};
 
     execute() {
-        if (this.opt === null || this.opt === undefined)
+        if (!!!this.opt)
             return;
         this.md = this.onMouseDownHandler.bind(this);
         this.mm = this.onMouseMovehandler.bind(this);

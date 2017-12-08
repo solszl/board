@@ -1,5 +1,6 @@
 import { AbstractCommand } from "./absCommand";
 import { Point } from "../interfaces";
+import { CommandEnum } from "./CommandEnum";
 /**
  *  画笔工具
  * 
@@ -10,12 +11,15 @@ import { Point } from "../interfaces";
 export default class PenCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {
         super(root);
-        this.type = "pen_command";
+        this.type = CommandEnum.PEN;
+        this.data['type'] = this.type;
+        this.path = [];
     }
 
+    path: Array<Point>;
     execute(): void {
         super.execute();
-        if (this.opt === null || this.opt === undefined)
+        if (!!!this.opt)
             return;
 
         this.md = this.onMouseDownHandler.bind(this);
@@ -43,6 +47,7 @@ export default class PenCommand extends AbstractCommand {
     private startPos: Point;
     private endPos: Point;
     private onMouseDownHandler(e: MouseEvent): void {
+        this.path = [];
         // 鼠标按下的时候，移除down，添加move 和 up 监听
         // 鼠标抬起的时候，移除move 和 up， 添加down监听，保证同时只有一个监听事件
         this.root.removeEventListener("mousedown", this.md);
@@ -61,11 +66,13 @@ export default class PenCommand extends AbstractCommand {
         this.ctx.globalCompositeOperation = "source-over";
         this.ctx.beginPath();
         this.ctx.moveTo(this.startPos.x, this.startPos.y);
+        this.path.push(new Point(this.startPos.x, this.startPos.y));
     }
 
     private onMouseMovehandler(e: MouseEvent): void {
         this.ctx.lineTo(e.layerX, e.layerY);
         this.ctx.stroke();
+        this.path.push(new Point(e.layerX, e.layerY));
     }
 
     private onMouseUpHandler(e: MouseEvent): void {
@@ -73,10 +80,25 @@ export default class PenCommand extends AbstractCommand {
         this.root.removeEventListener("mouseup", this.mu);
         this.root.addEventListener("mousedown", this.md);
         this.endPos = new Point(e.layerX, e.layerY);
+        this.path.push(this.endPos);
+        this.toJSON();
     }
 
     complete() {
         super.complete();
         this.unbindEvents();
+        this.path = [];
+    }
+
+    toJSON(): string {
+        this.data["path"] = this.path;
+        this.data["opt"] = this.opt;
+        var s: string = JSON.stringify(this.data);
+        console.log(s, this.data['type']);
+        return JSON.stringify(this.data);
+    }
+
+    fromJSON(data: string) {
+        //{"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}
     }
 }

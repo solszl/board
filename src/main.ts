@@ -5,6 +5,8 @@ import ClearCommand from './cmd/clearCommand';
 import { AbstractCommand } from './cmd/absCommand';
 import EraserCommand from './cmd/eraserCommand';
 import TextCommand from './cmd/textCommand';
+import { CommandEnum } from './cmd/CommandEnum';
+import { Point } from './interfaces';
 export default class Main {
 
     root: HTMLCanvasElement;
@@ -49,35 +51,25 @@ export default class Main {
     }
 
     setPencil(): void {
-        if (this.currentCMD) {
-            this.currentCMD.complete();
-        }
-        var cmd: PenCommand = new PenCommand(this.root);
-        this.currentCMD = cmd;
-        cmd.opt = this.opt;
-        console.log(this.opt.toString());
-        cmd.execute();
+        //{"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}
+        // var data: string = '{"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}';
+        // var o: any = JSON.parse(data);
+        // var type: string = o['type'];
+        // var path: Array<Point> = [];
+        // // Array<Point>(o['path']).every((val, idx, arr) => {
+        // //     path.push(Point.from(arr[idx]));
+        // //     return true;
+        // // });
+        // // console.log(o.path);
+        CommandManager.getInstance().execute(CommandEnum.PEN, this.root, this.opt);
     }
 
     setErase(): void {
-        if (this.currentCMD) {
-            this.currentCMD.complete();
-        }
-        var cmd: EraserCommand = new EraserCommand(this.root);
-        this.currentCMD = cmd;
-        cmd.opt = this.opt;
-        cmd.execute();
+        CommandManager.getInstance().execute(CommandEnum.EARSER, this.root, this.opt);
     }
 
     setText(): void {
-        if (this.currentCMD) {
-            this.currentCMD.complete();
-        }
-
-        var cmd: TextCommand = new TextCommand(this.root);
-        this.currentCMD = cmd;
-        cmd.opt = this.opt;
-        cmd.execute();
+        CommandManager.getInstance().execute(CommandEnum.TEXT, this.root, this.opt);
     }
 
     saveAsBitmap(): void {
@@ -97,13 +89,7 @@ export default class Main {
     }
 
     clearBoard(): void {
-        if (this.currentCMD) {
-            this.currentCMD.complete();
-        }
-        var cmd: ClearCommand = new ClearCommand(this.root);
-        this.currentCMD = cmd;
-        cmd.opt = this.opt;
-        cmd.execute();
+        CommandManager.getInstance().execute(CommandEnum.CLEAR, this.root, this.opt);
     }
 
     setBoardData(data: string): void {
