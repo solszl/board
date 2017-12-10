@@ -1,8 +1,8 @@
-import { IUndoableCommand } from "./cmdInterface";
+import { ICommand } from "./cmdInterface";
 import BoardOption from "./option";
 import { isNullOrUndefined } from "util";
 
-export abstract class AbstractCommand implements IUndoableCommand {
+export abstract class AbstractCommand implements ICommand {
     ctx: CanvasRenderingContext2D;
     root: HTMLCanvasElement;
     data: any;
@@ -34,24 +34,6 @@ export abstract class AbstractCommand implements IUndoableCommand {
     }
 
     /**
-     * 撤销
-     * 
-     * @memberof AbstractCommand
-     */
-    undo(): void {
-
-    }
-
-    /**
-     * 重做
-     * 
-     * @memberof AbstractCommand
-     */
-    redo(): void {
-
-    }
-
-    /**
      * 数据JSON化
      * 
      * @returns {string} 
@@ -71,6 +53,18 @@ export abstract class AbstractCommand implements IUndoableCommand {
     fromJSON(data: string) {
         if (data === "")
             return;
+    }
+
+    /**
+     * 获取当前canvas的ImageData
+     * 
+     * @protected
+     * @returns {ImageData} 
+     * @memberof AbstractCommand
+     */
+    protected getImageData(): ImageData {
+        var bmd: ImageData = this.ctx.getImageData(0, 0, this.root.width, this.root.height);
+        return bmd;
     }
 
     // 声明几个函数

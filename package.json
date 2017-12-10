@@ -8,6 +8,7 @@
     "typescript": "^2.6.2"
   },
   "devDependencies": {
+    "@types/bootstrap": "^3.3.36",
     "@types/webpack": "^3.8.1",
     "concurrently": "^3.5.1",
     "lite-server": "^2.3.0",

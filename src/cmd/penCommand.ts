@@ -1,6 +1,7 @@
 import { AbstractCommand } from "./absCommand";
 import { Point } from "../interfaces";
 import { CommandEnum } from "./CommandEnum";
+import { UndoManager } from "../manager/undoManager";
 /**
  *  画笔工具
  * 
@@ -57,6 +58,7 @@ export default class PenCommand extends AbstractCommand {
         super.onMouseUpHandler(e);
         this.endPos = new Point(e.layerX, e.layerY);
         this.path.push(this.endPos);
+        UndoManager.getInstance().push(this.getImageData());
     }
 
     complete() {

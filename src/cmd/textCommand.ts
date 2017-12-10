@@ -1,4 +1,5 @@
 import { AbstractCommand } from "./absCommand";
+import { UndoManager } from "../manager/undoManager";
 
 /**
  *  文本命令
@@ -37,5 +38,10 @@ export default class TextCommand extends AbstractCommand {
         this.ctx.putImageData(this.bmd, 0, 0);
         var str: string = this.opt.content;
         this.ctx.fillText(str, e.layerX, e.layerY);
+    }
+
+    protected onMouseUpHandler(e: MouseEvent): void {
+        super.onMouseUpHandler(e);
+        UndoManager.getInstance().push(this.getImageData());
     }
 }

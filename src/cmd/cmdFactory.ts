@@ -1,4 +1,3 @@
-import { IUndoableCommand } from "./cmdInterface";
 import { CommandEnum } from "./CommandEnum";
 import ClearCommand from "./clearCommand";
 import { AbstractCommand } from "./absCommand";

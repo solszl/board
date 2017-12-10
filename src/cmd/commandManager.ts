@@ -1,15 +1,11 @@
-import { AbstractCommand } from "./absCommand";
-import { IUndoableCommand } from "./cmdInterface";
-import { CommandFactory } from "./cmdFactory";
+import { AbstractCommand } from './absCommand';
+import { CommandFactory } from './cmdFactory';
+import { UndoManager } from "../manager/undoManager";
 import BoardOption from "./option";
 
 class CommandManager {
 
     private static instance: CommandManager;
-
-    private static MAX_COUNT: number = 10;
-
-    stack: Array<IUndoableCommand>;
 
     constructor() {
     }
@@ -27,24 +23,12 @@ class CommandManager {
         if (!!this.lastCMD) {
             this.lastCMD.complete();
         }
+
         this.currentCMD = CommandFactory.getCommand(type, root);
         this.currentCMD.opt = opt;
         this.currentCMD.execute();
 
         this.lastCMD = this.currentCMD;
-    }
-
-    undo() {
-
-    }
-
-    redo() {
-
-    }
-
-
-    private turncate(stack: Array<IUndoableCommand>): void {
-
     }
 }
 

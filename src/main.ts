@@ -7,6 +7,7 @@ import EraserCommand from './cmd/eraserCommand';
 import TextCommand from './cmd/textCommand';
 import { CommandEnum } from './cmd/CommandEnum';
 import { Point } from './interfaces';
+import { UndoManager } from './manager/undoManager';
 export default class Main {
 
     root: HTMLCanvasElement;
@@ -28,6 +29,9 @@ export default class Main {
         console.log(this);
         this.root = e;
         this.ctx = this.root.getContext("2d") as CanvasRenderingContext2D;
+        this.ctx.fillStyle = "lightgray";
+        this.ctx.fillRect(0, 0, this.root.width, this.root.height);
+        UndoManager.getInstance().push(this.ctx.getImageData(0, 0, this.root.width, this.root.height));
     }
 
     /**
@@ -48,6 +52,8 @@ export default class Main {
      * @memberof Main
      */
     setBackgroundColor(color: string): void {
+        this.ctx.fillStyle = color;
+        this.ctx.fillRect(0, 0, this.root.width, this.root.height);
     }
 
     setPencil(): void {
@@ -71,11 +77,17 @@ export default class Main {
     }
 
     undo(): void {
-        CommandManager.getInstance().undo();
+        // CommandManager.getInstance().undo();
+        var bmd: ImageData | undefined = UndoManager.getInstance().undo();
+        if (bmd)
+            this.ctx.putImageData(bmd as ImageData, 0, 0);
     }
 
     redo(): void {
-        CommandManager.getInstance().redo();
+        // CommandManager.getInstance().redo();
+        var bmd: ImageData | undefined = UndoManager.getInstance().redo();
+        if (bmd)
+            this.ctx.putImageData(bmd as ImageData, 0, 0);
     }
 
     clearBoard(): void {

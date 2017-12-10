@@ -1,5 +1,6 @@
 import { AbstractCommand } from "./absCommand";
 import { CommandEnum } from "./CommandEnum";
+import { UndoManager } from "../manager/undoManager";
 
 export default class EraserCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {
@@ -36,5 +37,10 @@ export default class EraserCommand extends AbstractCommand {
         super.onMouseMovehandler(e);
         this.ctx.lineTo(e.layerX, e.layerY);
         this.ctx.stroke();
+    }
+
+    protected onMouseUpHandler(e: MouseEvent): void {
+        super.onMouseUpHandler(e);
+        UndoManager.getInstance().push(this.getImageData());
     }
 }
