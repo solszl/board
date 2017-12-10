@@ -12,6 +12,7 @@ export default class ClearCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {
         super(root);
         this.type = CommandEnum.CLEAR;
+        this.data['type'] = this.type;
     }
 
     execute() {

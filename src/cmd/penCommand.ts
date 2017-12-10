@@ -2,6 +2,7 @@ import { AbstractCommand } from "./absCommand";
 import { Point } from "../interfaces";
 import { CommandEnum } from "./CommandEnum";
 import { UndoManager } from "../manager/undoManager";
+import { DataManager } from "../manager/dataManager";
 /**
  *  画笔工具
  * 
@@ -17,7 +18,6 @@ export default class PenCommand extends AbstractCommand {
         this.path = [];
     }
 
-    path: Array<Point>;
     execute(): void {
         super.execute();
         if (!!!this.opt)
@@ -59,6 +59,7 @@ export default class PenCommand extends AbstractCommand {
         this.endPos = new Point(e.layerX, e.layerY);
         this.path.push(this.endPos);
         UndoManager.getInstance().push(this.getImageData());
+        DataManager.getInstance().dispatch(this.toJSON());
     }
 
     complete() {
@@ -69,18 +70,23 @@ export default class PenCommand extends AbstractCommand {
     toJSON(): string {
         this.data["path"] = this.path;
         this.data["opt"] = this.opt;
-        var s: string = JSON.stringify(this.data);
         return JSON.stringify(this.data);
     }
 
-    fromJSON(data: string) {
-        //{"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}
-        var o: any = JSON.parse(data);
-        var type: string = o['type'];
-        var arr: Array<any> = o['path'];
-        var p: Array<Point> = [];
-        arr.forEach((val, idx, arr) => {
-            p.push(Point.from(val));
-        });
+    drawByJSON() {
+        this.ctx.lineWidth = this.opt.size;
+        this.ctx.strokeStyle = this.opt.color;
+        this.ctx.lineJoin = "round";
+        this.ctx.lineCap = "round";
+        this.ctx.globalCompositeOperation = "source-over";
+        this.ctx.beginPath();
+        if (this.path.length > 1) {
+            this.ctx.moveTo(this.path[0].x, this.path[0].y);
+
+            this.path.forEach((val, idx, arr) => {
+                this.ctx.lineTo(val.x, val.y);
+                this.ctx.stroke();
+            })
+        }
     }
 }

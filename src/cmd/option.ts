@@ -28,7 +28,15 @@ class BoardOption {
     content: string;
 
     toString(): string {
-        return `color:${ this.color }, size:${ this.size }, content:${ this.content }`;
+        return `color:${this.color}, size:${this.size}, content:${this.content}`;
+    }
+
+    static fromObj(data: any): BoardOption {
+        var opt: BoardOption = new BoardOption();
+        opt.color = data['color'];
+        opt.content = data['content'];
+        opt.size = data['size'];
+        return opt;
     }
 }
 

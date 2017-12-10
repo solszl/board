@@ -8,6 +8,7 @@ import TextCommand from './cmd/textCommand';
 import { CommandEnum } from './cmd/CommandEnum';
 import { Point } from './interfaces';
 import { UndoManager } from './manager/undoManager';
+import { DataManager } from './manager/dataManager';
 export default class Main {
 
     root: HTMLCanvasElement;
@@ -95,9 +96,7 @@ export default class Main {
     }
 
     setBoardData(data: string): void {
-        var oringin: string = '{"type":2}';
-        var obj: any = JSON.parse(oringin);
-        console.log(obj.type);
+        DataManager.getInstance().setData(data, this.root);
     }
 
     opt: BoardOption;

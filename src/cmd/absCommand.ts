@@ -1,6 +1,7 @@
 import { ICommand } from "./cmdInterface";
 import BoardOption from "./option";
 import { isNullOrUndefined } from "util";
+import { Point } from "../interfaces";
 
 export abstract class AbstractCommand implements ICommand {
     ctx: CanvasRenderingContext2D;
@@ -10,8 +11,11 @@ export abstract class AbstractCommand implements ICommand {
         this.root = root;
         this.ctx = this.root.getContext("2d") as CanvasRenderingContext2D;
         this.data = {};
+        this.path = [];
     }
     type: string;
+
+    path: Array<Point>;
 
     opt: BoardOption;
 
@@ -53,6 +57,18 @@ export abstract class AbstractCommand implements ICommand {
     fromJSON(data: string) {
         if (data === "")
             return;
+
+        var o: any = JSON.parse(data);
+        var arr: Array<any> = o['path'];
+        var p: Array<Point> = [];
+        arr.forEach((val, idx, arr) => {
+            this.path.push(Point.from(val));
+        });
+        this.opt = BoardOption.fromObj(o['opt']);
+    }
+
+    drawByJSON() {
+
     }
 
     /**

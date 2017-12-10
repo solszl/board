@@ -63,7 +63,6 @@ export class UndoManager {
         this.dataCache = this.dataCache.slice(0, this.currentIdx + 1);
         this.dataCache.push(data);
         this.currentIdx++;
-        console.log("当前cache长度为：", this.dataCache.length, "当前索引：", this.currentIdx);
     }
 
     private truncate() {

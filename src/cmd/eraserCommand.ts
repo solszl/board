@@ -1,11 +1,14 @@
 import { AbstractCommand } from "./absCommand";
 import { CommandEnum } from "./CommandEnum";
 import { UndoManager } from "../manager/undoManager";
+import { Point } from "../interfaces";
+import { DataManager } from "../manager/dataManager";
 
 export default class EraserCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {
         super(root);
         this.type = CommandEnum.EARSER;
+        this.data['type'] = this.type;
     }
 
     execute() {
@@ -31,16 +34,44 @@ export default class EraserCommand extends AbstractCommand {
         this.ctx.lineJoin = "round";
         this.ctx.globalCompositeOperation = "destination-out";
         this.ctx.beginPath();
+        this.path.push(new Point(e.layerX, e.layerY));
     }
 
     protected onMouseMovehandler(e: MouseEvent): void {
         super.onMouseMovehandler(e);
         this.ctx.lineTo(e.layerX, e.layerY);
         this.ctx.stroke();
+        this.path.push(new Point(e.layerX, e.layerY));
     }
 
     protected onMouseUpHandler(e: MouseEvent): void {
         super.onMouseUpHandler(e);
+        this.path.push(new Point(e.layerX, e.layerY));
         UndoManager.getInstance().push(this.getImageData());
+        DataManager.getInstance().dispatch(this.toJSON());
+    }
+
+    toJSON() {
+        this.data["path"] = this.path;
+        this.data["opt"] = this.opt;
+        return JSON.stringify(this.data);
+    }
+
+    drawByJSON() {
+        this.ctx.lineWidth = this.opt.size;
+        this.ctx.strokeStyle = this.opt.color;
+        this.ctx.lineJoin = "round";
+        this.ctx.lineCap = "round";
+        this.ctx.globalCompositeOperation = "destination-out";
+        this.ctx.beginPath();
+        if (this.path.length > 1) {
+            this.ctx.moveTo(this.path[0].x, this.path[0].y);
+
+            this.path.forEach((val, idx, arr) => {
+                this.ctx.lineTo(val.x, val.y);
+                this.ctx.stroke();
+            })
+        }
+        this.ctx.globalCompositeOperation = "source-over";
     }
 }
