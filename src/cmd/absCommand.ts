@@ -44,7 +44,10 @@ export abstract class AbstractCommand implements ICommand {
      * @memberof AbstractCommand
      */
     toJSON(): string {
-        return "{}";
+        this.data["path"] = this.path;
+        this.data["opt"] = this.opt;
+        this.data['stamp'] = new Date().getTime();
+        return JSON.stringify(this.data);
     }
 
     /**

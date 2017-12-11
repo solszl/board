@@ -30,8 +30,4 @@ export class DataManager {
         cmd.fromJSON(data);
         cmd.drawByJSON();
     }
-
-    dispatch(data: string) {
-        console.log(data);
-    }
 }

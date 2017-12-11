@@ -1,4 +1,4 @@
-import CommandManager from './cmd/commandManager';
+import CommandManager from './manager/commandManager';
 import PenCommand from './cmd/penCommand';
 import BoardOption from "./cmd/option";
 import ClearCommand from './cmd/clearCommand';
@@ -9,6 +9,7 @@ import { CommandEnum } from './cmd/CommandEnum';
 import { Point } from './interfaces';
 import { UndoManager } from './manager/undoManager';
 import { DataManager } from './manager/dataManager';
+import { VEvent } from './events/events';
 export default class Main {
 
     root: HTMLCanvasElement;
@@ -105,5 +106,9 @@ export default class Main {
         this.opt.color = color;
         this.opt.size = size;
         this.opt.content = content;
+    }
+
+    on(action: string, handler: Function) {
+        VEvent.listen(action, handler);
     }
 }

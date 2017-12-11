@@ -3,6 +3,7 @@ import { CommandEnum } from "./CommandEnum";
 import { UndoManager } from "../manager/undoManager";
 import { Point } from "../interfaces";
 import { DataManager } from "../manager/dataManager";
+import { VEvent, VEventEnum } from "../events/events";
 
 export default class EraserCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {
@@ -48,13 +49,7 @@ export default class EraserCommand extends AbstractCommand {
         super.onMouseUpHandler(e);
         this.path.push(new Point(e.layerX, e.layerY));
         UndoManager.getInstance().push(this.getImageData());
-        DataManager.getInstance().dispatch(this.toJSON());
-    }
-
-    toJSON() {
-        this.data["path"] = this.path;
-        this.data["opt"] = this.opt;
-        return JSON.stringify(this.data);
+        VEvent.trigger(VEventEnum.Add, this.toJSON());
     }
 
     drawByJSON() {

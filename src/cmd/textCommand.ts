@@ -2,6 +2,7 @@ import { AbstractCommand } from "./absCommand";
 import { UndoManager } from "../manager/undoManager";
 import { Point } from "../interfaces";
 import { DataManager } from "../manager/dataManager";
+import { VEvent, VEventEnum } from "../events/events";
 
 /**
  *  文本命令
@@ -19,7 +20,7 @@ export default class TextCommand extends AbstractCommand {
 
     execute(): void {
         super.execute();
-        if (this.opt === null || this.opt === undefined)
+        if (!!!this.opt)
             return;
 
         this.bindEvents();
@@ -47,15 +48,10 @@ export default class TextCommand extends AbstractCommand {
     protected onMouseUpHandler(e: MouseEvent): void {
         super.onMouseUpHandler(e);
         this.endPoint = new Point(e.layerX, e.layerY);
+        this.path.push(this.endPoint);
         this.complete();
         UndoManager.getInstance().push(this.getImageData());
-        DataManager.getInstance().dispatch(this.toJSON());
-    }
-
-    toJSON(): string {
-        this.data["opt"] = this.opt;
-        this.data["path"] = [this.endPoint];
-        return JSON.stringify(this.data);
+        VEvent.trigger(VEventEnum.Add, this.toJSON());
     }
 
     drawByJSON() {

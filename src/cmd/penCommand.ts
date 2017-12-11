@@ -3,6 +3,7 @@ import { Point } from "../interfaces";
 import { CommandEnum } from "./CommandEnum";
 import { UndoManager } from "../manager/undoManager";
 import { DataManager } from "../manager/dataManager";
+import { VEvent, VEventEnum } from "../events/events";
 /**
  *  画笔工具
  * 
@@ -59,18 +60,12 @@ export default class PenCommand extends AbstractCommand {
         this.endPos = new Point(e.layerX, e.layerY);
         this.path.push(this.endPos);
         UndoManager.getInstance().push(this.getImageData());
-        DataManager.getInstance().dispatch(this.toJSON());
+        VEvent.trigger(VEventEnum.Add, this.toJSON());
     }
 
     complete() {
         super.complete();
         this.path = [];
-    }
-
-    toJSON(): string {
-        this.data["path"] = this.path;
-        this.data["opt"] = this.opt;
-        return JSON.stringify(this.data);
     }
 
     drawByJSON() {
