@@ -34,14 +34,16 @@ export default class TextCommand extends AbstractCommand {
         super.onMouseDownHandler(e);
         this.bmd = this.ctx.getImageData(0, 0, this.root.width, this.root.height);
         var str: string = this.opt.content;
-        this.ctx.fillText(str, e.layerX, e.layerY);
+        var p: Point = new Point(e.layerX, e.layerY);
+        this.ctx.fillText(str, p.x, p.y);
     }
 
     protected onMouseMovehandler(e: MouseEvent): void {
         super.onMouseMovehandler(e);
         this.ctx.putImageData(this.bmd, 0, 0);
         var str: string = this.opt.content;
-        this.ctx.fillText(str, e.layerX, e.layerY);
+        var p: Point = new Point(e.layerX, e.layerY);
+        this.ctx.fillText(str, p.x, p.y);
     }
 
     private endPoint: Point;

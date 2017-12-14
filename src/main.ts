@@ -44,7 +44,15 @@ export default class Main {
      * @memberof Main
      */
     setSize(w: number, h: number): void {
-        console.log("w:", w, "h:", h);
+        // 1024 * 768
+        // console.log("w:", w, "h:", h);
+        this.clearAll();
+        this.ctx.restore();
+        this.ctx.scale(1, 1);
+        this.ctx.save();
+        var s: number = Math.min(w / 500, h / 500);
+        this.ctx.scale(s, s);
+        Point.scale = s;
     }
 
     /**

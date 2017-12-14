@@ -50,9 +50,10 @@ export default class PenCommand extends AbstractCommand {
 
     protected onMouseMovehandler(e: MouseEvent): void {
         super.onMouseMovehandler(e);
-        this.ctx.lineTo(e.layerX, e.layerY);
+        var p: Point = new Point(e.layerX, e.layerY);
+        this.ctx.lineTo(p.x, p.y);
         this.ctx.stroke();
-        this.path.push(new Point(e.layerX, e.layerY));
+        this.path.push(p);
     }
 
     protected onMouseUpHandler(e: MouseEvent): void {

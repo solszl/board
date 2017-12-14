@@ -1,6 +1,7 @@
 export class Point {
-    public x: number;
-    public y: number;
+    public _x: number;
+    public _y: number;
+    static scale: number = 1;
     constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
@@ -18,5 +19,20 @@ export class Point {
 
     toString(): string {
         return `{x: ${this.x}, y: ${this.y}}`;
+    }
+
+    public set x(val: number) {
+        this._x = val;
+    }
+
+    public get x(): number {
+        return this._x / Point.scale;
+    }
+    public set y(val: number) {
+        this._y = val;
+    }
+
+    public get y(): number {
+        return this._y / Point.scale;
     }
 }

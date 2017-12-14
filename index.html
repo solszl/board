@@ -11,6 +11,7 @@
         window.onload = function () {
             m = new boardCore.default(root);
             txtData.value = '{"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}';
+            clearBoard();
             m.on("add", (a) => console.log(a));
         }
         function setBoardSize() {
@@ -74,7 +75,7 @@
     </style>
 </head>
 
-<body>
+<body style="background-color: rgb(249, 183, 255)">
     <div>
         <input type="text" placeholder="x" id="xpos" />
         <input type="text" placeholder="y" id="ypos" />
@@ -138,7 +139,7 @@
         <input type="button" value="Confirm" onclick="setJSONData()" />
     </div>
     <div>
-        <canvas id="root" width="600" height="500"></canvas>
+        <canvas id="root" width="500" height="500"></canvas>
     </div>
 </body>
 
