@@ -28,10 +28,10 @@ export default class Main {
         }
 
         console.log("BoardCore initialized");
-        console.log(this);
         this.root = e;
         this.ctx = this.root.getContext("2d") as CanvasRenderingContext2D;
-        this.ctx.fillStyle = "lightgray";
+        // 设置背景色，保存起来状态
+        this.ctx.fillStyle = "rgba(255,255,255,0)";
         this.ctx.fillRect(0, 0, this.root.width, this.root.height);
         UndoManager.getInstance().push(this.ctx.getImageData(0, 0, this.root.width, this.root.height));
     }
@@ -106,6 +106,12 @@ export default class Main {
 
     setBoardData(data: string): void {
         DataManager.getInstance().setData(data, this.root);
+    }
+
+    /** 取消所有操作*/
+    cancelOperate() {
+        if (!!CommandManager.getInstance().lastCMD)
+            CommandManager.getInstance().lastCMD.complete();
     }
 
     opt: BoardOption;
