@@ -69,5 +69,6 @@ export default class EraserCommand extends AbstractCommand {
             })
         }
         this.ctx.globalCompositeOperation = "source-over";
+        UndoManager.getInstance().push(this.getImageData());
     }
 }

@@ -5,5 +5,7 @@ export enum CommandEnum {
     TEXT = "text_command",
     LINE = "line_command",
     RECT = "rect_command",
-    CIRCLE = "circle_command"
+    CIRCLE = "circle_command",
+    UNDO = "undo_command",
+    REDO = "redo_command"
 }

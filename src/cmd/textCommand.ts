@@ -61,5 +61,6 @@ export default class TextCommand extends AbstractCommand {
         this.ctx.fillStyle = this.opt.color;
         var p: Point = this.path[0];
         this.ctx.fillText(this.opt.content, p.$x, p.$y);
+        UndoManager.getInstance().push(this.getImageData());
     }
 }

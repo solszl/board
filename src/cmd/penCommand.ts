@@ -84,5 +84,6 @@ export default class PenCommand extends AbstractCommand {
                 this.ctx.stroke();
             })
         }
+        UndoManager.getInstance().push(this.getImageData());
     }
 }

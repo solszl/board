@@ -82,22 +82,12 @@ export default class Main {
 
     }
 
-    clearAll(): void {
-        CommandManager.getInstance().execute(CommandEnum.CLEAR, this.root, this.opt);
-    }
-
     undo(): void {
-        // CommandManager.getInstance().undo();
-        var bmd: ImageData | undefined = UndoManager.getInstance().undo();
-        if (bmd)
-            this.ctx.putImageData(bmd as ImageData, 0, 0);
+        CommandManager.getInstance().execute(CommandEnum.UNDO, this.root, this.opt);
     }
 
     redo(): void {
-        // CommandManager.getInstance().redo();
-        var bmd: ImageData | undefined = UndoManager.getInstance().redo();
-        if (bmd)
-            this.ctx.putImageData(bmd as ImageData, 0, 0);
+        CommandManager.getInstance().execute(CommandEnum.REDO, this.root, this.opt);
     }
 
     clearBoard(): void {
@@ -124,5 +114,9 @@ export default class Main {
 
     on(action: string, handler: Function) {
         VEvent.listen(action, handler);
+    }
+
+    clearAll() {
+        this.ctx.clearRect(0, 0, this.root.width, this.root.height);
     }
 }
