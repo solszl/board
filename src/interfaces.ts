@@ -1,10 +1,10 @@
 export class Point {
-    public _x: number;
-    public _y: number;
+    private x: number;
+    private y: number;
     static scale: number = 1;
     constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+        this.$x = x;
+        this.$y = y;
     }
 
     static distance(p1: Point, p2: Point): number {
@@ -21,18 +21,18 @@ export class Point {
         return `{x: ${this.x}, y: ${this.y}}`;
     }
 
-    public set x(val: number) {
-        this._x = val;
+    public set $x(val: number) {
+        this.x = val;
     }
 
-    public get x(): number {
-        return this._x / Point.scale;
+    public get $x(): number {
+        return this.x / Point.scale;
     }
-    public set y(val: number) {
-        this._y = val;
+    public set $y(val: number) {
+        this.y = val;
     }
 
-    public get y(): number {
-        return this._y / Point.scale;
+    public get $y(): number {
+        return this.y / Point.scale;
     }
 }

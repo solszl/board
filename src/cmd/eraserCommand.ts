@@ -41,7 +41,7 @@ export default class EraserCommand extends AbstractCommand {
     protected onMouseMovehandler(e: MouseEvent): void {
         super.onMouseMovehandler(e);
         var p: Point = new Point(e.layerX, e.layerY);
-        this.ctx.lineTo(p.x, p.y);
+        this.ctx.lineTo(p.$x, p.$y);
         this.ctx.stroke();
         this.path.push(p);
     }
@@ -61,10 +61,10 @@ export default class EraserCommand extends AbstractCommand {
         this.ctx.globalCompositeOperation = "destination-out";
         this.ctx.beginPath();
         if (this.path.length > 1) {
-            this.ctx.moveTo(this.path[0].x, this.path[0].y);
+            this.ctx.moveTo(this.path[0].$x, this.path[0].$y);
 
             this.path.forEach((val, idx, arr) => {
-                this.ctx.lineTo(val.x, val.y);
+                this.ctx.lineTo(val.$x, val.$y);
                 this.ctx.stroke();
             })
         }

@@ -44,14 +44,14 @@ export default class PenCommand extends AbstractCommand {
         // 像素叠加属性 from:https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
         this.ctx.globalCompositeOperation = "source-over";
         this.ctx.beginPath();
-        this.ctx.moveTo(this.startPos.x, this.startPos.y);
-        this.path.push(new Point(this.startPos.x, this.startPos.y));
+        this.ctx.moveTo(this.startPos.$x, this.startPos.$y);
+        this.path.push(this.startPos);
     }
 
     protected onMouseMovehandler(e: MouseEvent): void {
         super.onMouseMovehandler(e);
         var p: Point = new Point(e.layerX, e.layerY);
-        this.ctx.lineTo(p.x, p.y);
+        this.ctx.lineTo(p.$x, p.$y);
         this.ctx.stroke();
         this.path.push(p);
     }
@@ -77,10 +77,10 @@ export default class PenCommand extends AbstractCommand {
         this.ctx.globalCompositeOperation = "source-over";
         this.ctx.beginPath();
         if (this.path.length > 1) {
-            this.ctx.moveTo(this.path[0].x, this.path[0].y);
+            this.ctx.moveTo(this.path[0].$x, this.path[0].$y);
 
             this.path.forEach((val, idx, arr) => {
-                this.ctx.lineTo(val.x, val.y);
+                this.ctx.lineTo(val.$x, val.$y);
                 this.ctx.stroke();
             })
         }
