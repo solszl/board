@@ -33,6 +33,7 @@ export default class Main {
         // 设置背景色，保存起来状态
         this.ctx.fillStyle = "rgba(255,255,255,0)";
         this.ctx.fillRect(0, 0, this.root.width, this.root.height);
+        this.setSize(this.root.width, this.root.height);
         UndoManager.getInstance().push(this.ctx.getImageData(0, 0, this.root.width, this.root.height));
     }
 
@@ -44,15 +45,14 @@ export default class Main {
      * @memberof Main
      */
     setSize(w: number, h: number): void {
-        // 1024 * 768
-        // console.log("w:", w, "h:", h);
         this.clearAll();
         this.ctx.restore();
         this.ctx.scale(1, 1);
         this.ctx.save();
-        var s: number = Math.min(w / 500, h / 500);
-        this.ctx.scale(s, s);
-        Point.scale = s;
+        Point.scaleX = w / 800;
+        Point.scaleY = h / 450;
+        Point.scale = Math.min(Point.scaleX, Point.scaleY);
+        this.ctx.scale(Point.scale, Point.scale);
     }
 
     /**

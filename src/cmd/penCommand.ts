@@ -46,6 +46,13 @@ export default class PenCommand extends AbstractCommand {
         this.ctx.beginPath();
         this.ctx.moveTo(this.startPos.$x, this.startPos.$y);
         this.path.push(this.startPos);
+        // console.log("Point.scale:" + Point.scale);
+        // var layerPoint: Point = new Point(e.layerX, e.layerY);
+        // console.log("layer: " + layerPoint.toString() + layerPoint.normalized().toString());
+        // var offsetPoint: Point = new Point(e.offsetX, e.offsetY);
+        // console.log("offset: " + offsetPoint.toString() + offsetPoint.normalized().toString());
+        // var clientPoint: Point = new Point(e.clientX, e.clientY);
+        // console.log("client: " + clientPoint.toString() + clientPoint.normalized().toString());
     }
 
     protected onMouseMovehandler(e: MouseEvent): void {
@@ -76,6 +83,7 @@ export default class PenCommand extends AbstractCommand {
         this.ctx.lineCap = "round";
         this.ctx.globalCompositeOperation = "source-over";
         this.ctx.beginPath();
+
         if (this.path.length > 1) {
             this.ctx.moveTo(this.path[0].$x, this.path[0].$y);
 
