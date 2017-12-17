@@ -3,7 +3,7 @@ import BoardOption from "./option";
 import { isNullOrUndefined } from "util";
 import { Point } from "../interfaces";
 
-export abstract class AbstractCommand implements ICommand {
+export default abstract class AbstractCommand implements ICommand {
     ctx: CanvasRenderingContext2D;
     root: HTMLCanvasElement;
     data: any;

@@ -1,10 +1,10 @@
-import { AbstractCommand } from "./absCommand";
+import AbstractCommand from "./absCommand";
 import { CommandEnum } from "./CommandEnum";
 import BoardOption from "../cmd/option";
 import { UndoManager } from "../manager/undoManager";
 import { VEvent, VEventEnum } from "../events/events";
 
-export class UndoCommand extends AbstractCommand {
+export default class UndoCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {
         super(root);
         this.type = CommandEnum.UNDO;

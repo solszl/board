@@ -9,18 +9,12 @@ export class Point {
         this.$y = y;
     }
 
-    static distance(p1: Point, p2: Point): number {
-        var dis = 0;
-        dis = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
-        return dis;
-    }
-
     static from(val: any): Point {
         return new Point(val.x, val.y);
     }
 
     normalized(): Point {
-        return new Point(this.$x, this.$y);
+        return new Point(this.$x / Point.scaleX, this.$y / Point.scaleY);
     }
 
     toString(): string {
@@ -28,18 +22,18 @@ export class Point {
     }
 
     public set $x(val: number) {
-        this.x = this.fomatFloat(val * Point.scaleX);
+        this.x = this.fomatFloat(val);
     }
 
     public get $x(): number {
-        return this.fomatFloat(this.x / Point.scaleX);
+        return this.fomatFloat(this.x);
     }
     public set $y(val: number) {
-        this.y = this.fomatFloat(val * Point.scaleY);
+        this.y = this.fomatFloat(val);
     }
 
     public get $y(): number {
-        return this.fomatFloat(this.y / Point.scaleY);
+        return this.fomatFloat(this.y);
     }
 
     private fomatFloat(src: number, pos: number = 1): number {

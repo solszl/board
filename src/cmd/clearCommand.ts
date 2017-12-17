@@ -1,4 +1,4 @@
-import { AbstractCommand } from "./absCommand";
+import AbstractCommand from "./absCommand";
 import { CommandEnum } from "./CommandEnum";
 import { UndoManager } from "../manager/undoManager";
 import { VEvent, VEventEnum } from "../events/events";

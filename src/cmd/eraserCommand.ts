@@ -1,4 +1,4 @@
-import { AbstractCommand } from "./absCommand";
+import AbstractCommand from "./absCommand";
 import { CommandEnum } from "./CommandEnum";
 import { UndoManager } from "../manager/undoManager";
 import { Point } from "../interfaces";
@@ -35,12 +35,12 @@ export default class EraserCommand extends AbstractCommand {
         this.ctx.lineJoin = "round";
         this.ctx.globalCompositeOperation = "destination-out";
         this.ctx.beginPath();
-        this.path.push(new Point(e.layerX, e.layerY));
+        this.path.push(new Point(e.layerX, e.layerY).normalized());
     }
 
     protected onMouseMovehandler(e: MouseEvent): void {
         super.onMouseMovehandler(e);
-        var p: Point = new Point(e.layerX, e.layerY);
+        var p: Point = new Point(e.layerX, e.layerY).normalized();
         this.ctx.lineTo(p.$x, p.$y);
         this.ctx.stroke();
         this.path.push(p);
@@ -48,7 +48,7 @@ export default class EraserCommand extends AbstractCommand {
 
     protected onMouseUpHandler(e: MouseEvent): void {
         super.onMouseUpHandler(e);
-        this.path.push(new Point(e.layerX, e.layerY));
+        this.path.push(new Point(e.layerX, e.layerY).normalized());
         UndoManager.getInstance().push(this.getImageData());
         VEvent.trigger(VEventEnum.Add, this.toJSON());
     }
