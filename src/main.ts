@@ -2,7 +2,7 @@ import CommandManager from './manager/commandManager';
 import PenCommand from './cmd/penCommand';
 import BoardOption from "./cmd/option";
 import ClearCommand from './cmd/clearCommand';
-import { AbstractCommand } from './cmd/absCommand';
+import AbstractCommand from './cmd/absCommand';
 import EraserCommand from './cmd/eraserCommand';
 import TextCommand from './cmd/textCommand';
 import { CommandEnum } from './cmd/CommandEnum';

@@ -1,4 +1,4 @@
-import { AbstractCommand } from '../cmd/absCommand';
+import AbstractCommand from '../cmd/absCommand';
 import { CommandFactory } from '../cmd/cmdFactory';
 import { UndoManager } from "../manager/undoManager";
 import BoardOption from "../cmd/option";

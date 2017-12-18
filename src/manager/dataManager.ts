@@ -1,5 +1,5 @@
 import { CommandEnum } from "../cmd/CommandEnum";
-import { AbstractCommand } from "../cmd/absCommand";
+import AbstractCommand from "../cmd/absCommand";
 import { CommandFactory } from "../cmd/cmdFactory";
 
 export class DataManager {
