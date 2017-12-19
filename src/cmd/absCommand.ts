@@ -1,6 +1,5 @@
 import { ICommand } from "./cmdInterface";
 import BoardOption from "./option";
-import { isNullOrUndefined } from "util";
 import { Point } from "../interfaces";
 
 export default abstract class AbstractCommand implements ICommand {
