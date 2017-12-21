@@ -1,5 +1,5 @@
 import AbstractCommand from "./absCommand";
-import { CommandEnum } from "./CommandEnum";
+import { CommandEnum } from "./commandEnum";
 import { UndoManager } from "../manager/undoManager";
 import { VEvent, VEventEnum } from "../events/events";
 import BoardOption from "../cmd/option";

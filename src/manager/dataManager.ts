@@ -1,4 +1,4 @@
-import { CommandEnum } from "../cmd/CommandEnum";
+import { CommandEnum } from "../cmd/commandEnum";
 import AbstractCommand from "../cmd/absCommand";
 import { CommandFactory } from "../cmd/cmdFactory";
 

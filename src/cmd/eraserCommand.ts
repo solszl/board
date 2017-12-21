@@ -1,5 +1,5 @@
 import AbstractCommand from "./absCommand";
-import { CommandEnum } from "./CommandEnum";
+import { CommandEnum } from "./commandEnum";
 import { UndoManager } from "../manager/undoManager";
 import { Point } from "../interfaces";
 import { DataManager } from "../manager/dataManager";

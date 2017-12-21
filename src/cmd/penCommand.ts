@@ -1,6 +1,6 @@
 import AbstractCommand from "./absCommand";
 import { Point } from "../interfaces";
-import { CommandEnum } from "./CommandEnum";
+import { CommandEnum } from "./commandEnum";
 import { UndoManager } from "../manager/undoManager";
 import { DataManager } from "../manager/dataManager";
 import { VEvent, VEventEnum } from "../events/events";

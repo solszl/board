@@ -5,7 +5,7 @@ import ClearCommand from './cmd/clearCommand';
 import AbstractCommand from './cmd/absCommand';
 import EraserCommand from './cmd/eraserCommand';
 import TextCommand from './cmd/textCommand';
-import { CommandEnum } from './cmd/CommandEnum';
+import { CommandEnum } from './cmd/commandEnum';
 import { Point } from './interfaces';
 import { UndoManager } from './manager/undoManager';
 import { DataManager } from './manager/dataManager';

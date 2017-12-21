@@ -1,4 +1,4 @@
-import { CommandEnum } from "./CommandEnum";
+import { CommandEnum } from "./commandEnum";
 import ClearCommand from "./clearCommand";
 import AbstractCommand from "./absCommand";
 import EraserCommand from "./eraserCommand";
