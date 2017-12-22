@@ -50,19 +50,8 @@ export default class Main {
      */
     setSize(w: number, h: number): void {
         this.clearAll();
-        // this.ctx.restore();
-        // this.ctx.scale(1, 1);
-        // this.ctx.save();
-        // Point.scaleX = w / 800;
-        // Point.scaleY = h / 450;
-        // Point.scale = Math.min(Point.scaleX, Point.scaleY);
-        // this.ctx.scale(Point.scale, Point.scale);
         this.root.width = w;
         this.root.height = h;
-
-        // Point.scaleX = w / Constants.OriginWidth;
-        // Point.scaleY = h / Constants.OriginHeight;
-        // Point.scale = Math.min(Point.scaleX, Point.scaleY);
         Constants.Ratio = Math.min(w / Constants.OriginWidth, h / Constants.OriginHeight);
     }
 

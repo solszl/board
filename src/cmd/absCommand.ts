@@ -70,6 +70,11 @@ export default abstract class AbstractCommand implements ICommand {
             this.path.push(Point.from(val));
         });
         this.opt = BoardOption.fromObj(o['opt']);
+        Constants.OriginWidth = o['ow'];
+        Constants.OriginHeight = o['oh'];
+        var w: number = this.root.width;
+        var h: number = this.root.height;
+        Constants.Ratio = Math.min(w / Constants.OriginWidth, h / Constants.OriginHeight);
     }
 
     drawByJSON() {
