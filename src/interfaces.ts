@@ -1,9 +1,8 @@
+import Constants from "./constants";
+
 export class Point {
     private x: number;
     private y: number;
-    static scale: number = 1;
-    static scaleX: number = 1;
-    static scaleY: number = 1;
     constructor(x: number, y: number) {
         this.$x = x;
         this.$y = y;
@@ -14,7 +13,7 @@ export class Point {
     }
 
     normalized(): Point {
-        return new Point(this.$x / Point.scaleX, this.$y / Point.scaleY);
+        return new Point(this.$x / Constants.Ratio, this.$y / Constants.Ratio);
     }
 
     toString(): string {

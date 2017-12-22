@@ -1,6 +1,7 @@
 import { ICommand } from "./cmdInterface";
 import BoardOption from "./option";
 import { Point } from "../interfaces";
+import Constants from "../constants";
 
 export default abstract class AbstractCommand implements ICommand {
     ctx: CanvasRenderingContext2D;
@@ -46,6 +47,8 @@ export default abstract class AbstractCommand implements ICommand {
         this.data["path"] = this.path;
         this.data["opt"] = this.opt;
         this.data['stamp'] = new Date().getTime().toString();
+        this.data['ow'] = Constants.OriginWidth;
+        this.data['oh'] = Constants.OriginHeight;
         return JSON.stringify(this.data);
     }
 

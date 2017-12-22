@@ -4,6 +4,7 @@ import { CommandEnum } from "./commandEnum";
 import { UndoManager } from "../manager/undoManager";
 import { DataManager } from "../manager/dataManager";
 import { VEvent, VEventEnum } from "../events/events";
+import Constants from "../constants";
 /**
  *  画笔工具
  * 
@@ -31,7 +32,7 @@ export default class PenCommand extends AbstractCommand {
         super.onMouseDownHandler(e);
         this.path = [];
         // 设置线条宽度
-        this.ctx.lineWidth = this.opt.size;
+        this.ctx.lineWidth = this.opt.size * Constants.Ratio;
         // 设置颜色
         this.ctx.strokeStyle = this.opt.color;
         // 设置定点的样式
@@ -40,11 +41,11 @@ export default class PenCommand extends AbstractCommand {
         this.ctx.lineJoin = "round";
         // 像素叠加属性 from:https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
         this.ctx.globalCompositeOperation = "source-over";
-        var startPos: Point = new Point(e.layerX, e.layerY).normalized();
+        var startPos: Point = new Point(e.layerX, e.layerY);
         this.ctx.beginPath();
         this.ctx.moveTo(startPos.$x, startPos.$y);
-        this.path.push(startPos);
-        // console.log("Point.scale:" + Point.scale);
+        this.path.push(startPos.normalized());
+        // console.log("Point.scale:" +Constants.Ratio);
         // var layerPoint: Point = new Point(e.layerX, e.layerY);
         // console.log("layer: " + layerPoint.toString() + layerPoint.normalized().toString());
         // var offsetPoint: Point = new Point(e.offsetX, e.offsetY);
@@ -55,16 +56,16 @@ export default class PenCommand extends AbstractCommand {
 
     protected onMouseMovehandler(e: MouseEvent): void {
         super.onMouseMovehandler(e);
-        var p: Point = new Point(e.layerX, e.layerY).normalized();
+        var p: Point = new Point(e.layerX, e.layerY);
         this.ctx.lineTo(p.$x, p.$y);
         this.ctx.stroke();
-        this.path.push(p);
+        this.path.push(p.normalized());
     }
 
     protected onMouseUpHandler(e: MouseEvent): void {
         super.onMouseUpHandler(e);
-        var p: Point = new Point(e.layerX, e.layerY).normalized();
-        this.path.push(p);
+        var p: Point = new Point(e.layerX, e.layerY);
+        this.path.push(p.normalized());
         UndoManager.getInstance().push(this.getImageData());
         VEvent.trigger(VEventEnum.Add, this.toJSON());
     }
@@ -75,7 +76,7 @@ export default class PenCommand extends AbstractCommand {
     }
 
     drawByJSON() {
-        this.ctx.lineWidth = this.opt.size;
+        this.ctx.lineWidth = this.opt.size * Constants.Ratio;
         this.ctx.strokeStyle = this.opt.color;
         this.ctx.lineJoin = "round";
         this.ctx.lineCap = "round";
@@ -83,10 +84,10 @@ export default class PenCommand extends AbstractCommand {
         this.ctx.beginPath();
 
         if (this.path.length > 1) {
-            this.ctx.moveTo(this.path[0].$x, this.path[0].$y);
+            this.ctx.moveTo(this.path[0].$x * Constants.Ratio, this.path[0].$y * Constants.Ratio);
 
             this.path.forEach((val, idx, arr) => {
-                this.ctx.lineTo(val.$x, val.$y);
+                this.ctx.lineTo(val.$x * Constants.Ratio, val.$y * Constants.Ratio);
                 this.ctx.stroke();
             })
         }

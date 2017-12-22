@@ -10,6 +10,7 @@ import { Point } from './interfaces';
 import { UndoManager } from './manager/undoManager';
 import { DataManager } from './manager/dataManager';
 import { VEvent } from './events/events';
+import Constants from './constants';
 export default class Main {
 
     root: HTMLCanvasElement;
@@ -32,8 +33,11 @@ export default class Main {
         this.ctx = this.root.getContext("2d") as CanvasRenderingContext2D;
         // 设置背景色，保存起来状态
         this.ctx.fillStyle = "rgba(255,255,255,0)";
-        this.ctx.fillRect(0, 0, this.root.width, this.root.height);
-        this.setSize(this.root.width, this.root.height);
+        // this.ctx.fillRect(0, 0, this.root.width, this.root.height);
+        // this.setSize(this.root.width, this.root.height);
+        this.clearAll();
+        Constants.OriginHeight = e.height;
+        Constants.OriginWidth = e.width;
         UndoManager.getInstance().push(this.ctx.getImageData(0, 0, this.root.width, this.root.height));
     }
 
@@ -46,13 +50,20 @@ export default class Main {
      */
     setSize(w: number, h: number): void {
         this.clearAll();
-        this.ctx.restore();
-        this.ctx.scale(1, 1);
-        this.ctx.save();
-        Point.scaleX = w / 800;
-        Point.scaleY = h / 450;
-        Point.scale = Math.min(Point.scaleX, Point.scaleY);
-        this.ctx.scale(Point.scale, Point.scale);
+        // this.ctx.restore();
+        // this.ctx.scale(1, 1);
+        // this.ctx.save();
+        // Point.scaleX = w / 800;
+        // Point.scaleY = h / 450;
+        // Point.scale = Math.min(Point.scaleX, Point.scaleY);
+        // this.ctx.scale(Point.scale, Point.scale);
+        this.root.width = w;
+        this.root.height = h;
+
+        // Point.scaleX = w / Constants.OriginWidth;
+        // Point.scaleY = h / Constants.OriginHeight;
+        // Point.scale = Math.min(Point.scaleX, Point.scaleY);
+        Constants.Ratio = Math.min(w / Constants.OriginWidth, h / Constants.OriginHeight);
     }
 
     /**

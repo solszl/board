@@ -106,9 +106,9 @@
         <input type="button" value="Confirm" onclick="setJSONData()" />
         <button id="set-pagedown">翻页</button>
     </div>
-    <div style="width:800px;height:450px;resize: both;overflow: auto;border:1px solid black;">
-        <iframe id="presentation" src="./public/presentation.html" width="100%" height="100%" style="position: absolute; z-index: -1;"></iframe>
-        <canvas id="root" width="100%" height="100%" style="background: rgba(255,255,155,0);"></canvas>
+    <div id="container" style="width:450px;height:800px;resize: both;overflow: auto;border:1px solid black;">
+        <iframe id="presentation" src="./public/presentation.html" width="450px" height="800px" style="position: absolute; z-index: -1;"></iframe>
+        <canvas id="root" width="450px" height="800px" style="background: rgba(255,255,155,0);"></canvas>
     </div>
     <div class="clear"> </div>
     <div id="img-list">
@@ -208,23 +208,30 @@
     <script src="./dist/board-core.js"></script>
     <script>
         var m;
+        var originw;
+        var originh;
         window.onload = function () {
             m = new boardCore.default(root);
             txtData.value = '{"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}';
             m.on("add", function (a) {
                 setDocData(a);
                 setPenData(a);
-                // console.log(a);
+                console.log(a);
             });
-            nodesResize();
+            originw = 450;
+            originh = 800;
+            nodesResize(originw, originh);
             m.clearAll();
 
             pencilInit();
         }
         function setBoardSize() {
             var x = document.getElementById("xpos").value;
-            var y = document.getElementById("ypos").value;
-            m.setSize(x, y);
+            // var y = document.getElementById("ypos").value;
+            // m.setSize(x, y);// m.setSize(x, y);
+            var y = x * originh / originw;//16 / 9;
+            nodesResize(x, y);
+
         }
 
         function setBackgroundColor() {
@@ -386,12 +393,12 @@
             });
         }
 
-        function nodesResize() {
+        function nodesResize(width, height) {
             var canvas = document.getElementById('root'),
-                frame = document.getElementById('presentation'),
-                parent = canvas.parentNode,
-                width = parent.offsetWidth,
-                height = parent.offsetHeight;
+                frame = document.getElementById('presentation');
+            parent = canvas.parentNode;
+            // width = parent.offsetWidth,
+            // height = parent.offsetHeight;
             canvas.setAttribute('width', width - 10);
             canvas.setAttribute('height', height - 10);
             frame.setAttribute('width', width - 10);
@@ -400,6 +407,10 @@
             canvas.style.height = height - 10 + 'px';
             frame.style.width = width - 10 + 'px';
             frame.style.height = height - 10 + 'px';
+            parent.setAttribute('width', width - 10);
+            parent.setAttribute('height', height - 10);
+            parent.style.width = width - 10 + 'px';
+            parent.style.height = height - 10 + 'px';
             try {
                 console.log(width, height);
                 m.setSize(width, height);
@@ -459,14 +470,14 @@
 
             var pNode = document.getElementById('root').parentNode;
             onBoxResize(pNode, function () {
-                nodesResize();
+                nodesResize(pNode.width, pNode.height);
             });
-            window.addEventListener('resize', function () {
-                nodesResize();
-            }, true);
-            setTimeout(function () {
-                nodesResize();
-            }, 1000);
+            // window.addEventListener('resize', function () {
+            //     nodesResize(pNode.width,pNode.height);
+            // }, true);
+            // setTimeout(function () {
+            //     nodesResize(pNode.width, pNode.height);
+            // }, 1000);
 
             var setPageDown = document.getElementById('set-pagedown');
             changeCursorState(true);
