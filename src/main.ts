@@ -79,7 +79,8 @@ export default class Main {
     }
 
     saveAsBitmap(): void {
-
+        var image = this.root.toDataURL("image/png").replace("iamge/png", "image/octet-stream");
+        window.location.href = image;
     }
 
     clearAll(): void {
