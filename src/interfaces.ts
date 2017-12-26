@@ -1,38 +1,42 @@
-export class Point {
-    public _x: number;
-    public _y: number;
-    static scale: number = 1;
-    constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
-    }
+import Constants from "./constants";
 
-    static distance(p1: Point, p2: Point): number {
-        var dis = 0;
-        dis = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
-        return dis;
+export class Point {
+    private x: number;
+    private y: number;
+    constructor(x: number, y: number) {
+        this.$x = x;
+        this.$y = y;
     }
 
     static from(val: any): Point {
         return new Point(val.x, val.y);
     }
 
+    normalized(): Point {
+        return new Point(this.$x / Constants.Ratio, this.$y / Constants.Ratio);
+    }
+
     toString(): string {
         return `{x: ${this.x}, y: ${this.y}}`;
     }
 
-    public set x(val: number) {
-        this._x = val;
+    public set $x(val: number) {
+        this.x = this.fomatFloat(val);
     }
 
-    public get x(): number {
-        return this._x / Point.scale;
+    public get $x(): number {
+        return this.fomatFloat(this.x);
     }
-    public set y(val: number) {
-        this._y = val;
+    public set $y(val: number) {
+        this.y = this.fomatFloat(val);
     }
 
-    public get y(): number {
-        return this._y / Point.scale;
+    public get $y(): number {
+        return this.fomatFloat(this.y);
+    }
+
+    private fomatFloat(src: number, pos: number = 1): number {
+        return parseFloat(src.toFixed(pos));
+        // return Math.round(src * Math.pow(10, pos)) / Math.pow(10, pos);
     }
 }

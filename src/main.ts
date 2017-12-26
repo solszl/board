@@ -2,14 +2,15 @@ import CommandManager from './manager/commandManager';
 import PenCommand from './cmd/penCommand';
 import BoardOption from "./cmd/option";
 import ClearCommand from './cmd/clearCommand';
-import { AbstractCommand } from './cmd/absCommand';
+import AbstractCommand from './cmd/absCommand';
 import EraserCommand from './cmd/eraserCommand';
 import TextCommand from './cmd/textCommand';
-import { CommandEnum } from './cmd/CommandEnum';
+import { CommandEnum } from './cmd/commandEnum';
 import { Point } from './interfaces';
 import { UndoManager } from './manager/undoManager';
 import { DataManager } from './manager/dataManager';
 import { VEvent } from './events/events';
+import Constants from './constants';
 export default class Main {
 
     root: HTMLCanvasElement;
@@ -32,7 +33,11 @@ export default class Main {
         this.ctx = this.root.getContext("2d") as CanvasRenderingContext2D;
         // 设置背景色，保存起来状态
         this.ctx.fillStyle = "rgba(255,255,255,0)";
-        this.ctx.fillRect(0, 0, this.root.width, this.root.height);
+        // this.ctx.fillRect(0, 0, this.root.width, this.root.height);
+        // this.setSize(this.root.width, this.root.height);
+        this.clearAll();
+        Constants.OriginHeight = e.height;
+        Constants.OriginWidth = e.width;
         UndoManager.getInstance().push(this.ctx.getImageData(0, 0, this.root.width, this.root.height));
     }
 
@@ -44,15 +49,10 @@ export default class Main {
      * @memberof Main
      */
     setSize(w: number, h: number): void {
-        // 1024 * 768
-        // console.log("w:", w, "h:", h);
         this.clearAll();
-        this.ctx.restore();
-        this.ctx.scale(1, 1);
-        this.ctx.save();
-        var s: number = Math.min(w / 500, h / 500);
-        this.ctx.scale(s, s);
-        Point.scale = s;
+        this.root.width = w;
+        this.root.height = h;
+        Constants.Ratio = Math.min(w / Constants.OriginWidth, h / Constants.OriginHeight);
     }
 
     /**
@@ -83,22 +83,12 @@ export default class Main {
         window.location.href = image;
     }
 
-    clearAll(): void {
-        CommandManager.getInstance().execute(CommandEnum.CLEAR, this.root, this.opt);
-    }
-
     undo(): void {
-        // CommandManager.getInstance().undo();
-        var bmd: ImageData | undefined = UndoManager.getInstance().undo();
-        if (bmd)
-            this.ctx.putImageData(bmd as ImageData, 0, 0);
+        CommandManager.getInstance().execute(CommandEnum.UNDO, this.root, this.opt);
     }
 
     redo(): void {
-        // CommandManager.getInstance().redo();
-        var bmd: ImageData | undefined = UndoManager.getInstance().redo();
-        if (bmd)
-            this.ctx.putImageData(bmd as ImageData, 0, 0);
+        CommandManager.getInstance().execute(CommandEnum.REDO, this.root, this.opt);
     }
 
     clearBoard(): void {
@@ -125,5 +115,9 @@ export default class Main {
 
     on(action: string, handler: Function) {
         VEvent.listen(action, handler);
+    }
+
+    clearAll() {
+        this.ctx.clearRect(0, 0, this.root.width, this.root.height);
     }
 }

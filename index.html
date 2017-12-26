@@ -1,84 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Demo</title>
-    <link rel="stylesheet" href="./dist/bootstrap.min.css" />
-    <script src="./dist/board-core.js"></script>
-    <script>
-        var m;
-        window.onload = function () {
-            m = new boardCore.default(root);
-            txtData.value = '{"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}';
-            clearBoard();
-            m.on("add", (a) => console.log(a));
-        }
-        function setBoardSize() {
-            var x = document.getElementById("xpos").value;
-            var y = document.getElementById("ypos").value;
-            m.setSize(x, y);
-        }
-
-        function setBackgroundColor() {
-            var color = document.getElementById("bgColor").value;
-            m.setBackgroundColor(color);
-        }
-
-        function setPencilOption() {
-            var color = penColorPicker.value;
-            var size = cbbPenSize.value;
-            m.setBoardOption(color, size, "");
-            m.setPencil();
-        }
-
-        function setEraseOption() {
-            var size = cbbEraseSize.value;
-            m.setBoardOption("", size, "");
-            m.setErase();
-        }
-
-        function undo() {
-            m.undo();
-        }
-
-        function redo() {
-            m.redo();
-        }
-
-        function clearBoard() {
-            m.clearBoard();
-        }
-
-        function setJSONData(str) {
-            var str = txtData.value;
-            m.setBoardData(str);
-        }
-
-        function setTextOption() {
-            var color = fontColorPicker.value;
-            var size = cbbFontSize.value;
-            var content = txtContent.value;
-            m.setBoardOption(color, size, content);
-            m.setText();
-        }
-    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+    <title>test for ispring</title>
     <style>
-        input {
-            font-size: 14px;
-
+        #presentation {
+            width: 864px;
+            height: 540px;
+            border: 1px solid #000;
         }
 
-        input[type="button"] {
-            font-size: 16px;
+        #slide-counter {
+            float: left;
+            text-align: center;
+            min-width: 80px;
+            border: 1px solid #000;
+            vertical-align: bottom;
+            display: inline-block;
+            height: 33px;
+        }
+
+        #current-slide {
+            margin-top: 7px;
+            border: 1px solid #8AD;
+            width: 35%;
+        }
+
+        #button-prev,
+        #button-next,
+        #btn-step-pre,
+        #btn-step-next,
+        #button-jump,
+        #btn-step-jump {
+            float: left;
+            display: inline-block;
+            width: 80px;
+            height: 35px;
         }
     </style>
 </head>
 
-<body style="background-color: rgb(249, 183, 255)">
+<body>
     <div>
-        <input type="text" placeholder="x" id="xpos" />
-        <input type="text" placeholder="y" id="ypos" />
+        <input type="text" placeholder="width" id="xpos" />
+        <input type="text" placeholder="height" id="ypos" />
         <input type="button" value="Confirm" onclick="setBoardSize()" />
     </div>
     <div>
@@ -132,15 +99,394 @@
     <div>
         <input type="button" value="undo" onclick="undo()" />
         <input type="button" value="redo" onclick="redo()" />
-        <input type="button" value="clear" onclick="clearBoard()" />
+        <input type="button" value="clear" onclick="clearAll()" />
     </div>
     <div>
         <input type="text" id="txtData" />
         <input type="button" value="Confirm" onclick="setJSONData()" />
+        <button id="set-pagedown">翻页</button>
+    </div>
+    <div id="container" style="width:450px;height:800px;resize: both;overflow: auto;border:1px solid black;">
+        <iframe id="presentation" src="./public/presentation.html" width="450px" height="800px" style="position: absolute; z-index: -1;"></iframe>
+        <canvas id="root" width="450px" height="800px" style="background: rgba(255,255,155,0);"></canvas>
+    </div>
+    <div class="clear"> </div>
+    <div id="img-list">
+
     </div>
     <div>
-        <canvas id="root" width="500" height="500"></canvas>
+
+        <button id="button-prev">Prev</button>
+        <div id="slide-counter">
+            <input id="current-slide" type="text" size="3">
+            <span>/</span>
+            <span id="slide-count">0</span>
+        </div>
+        <button id="button-next">Next</button>
+        <button id="button-jump">jump3</button>
     </div>
+    <div>
+        <button id="btn-step-pre">prev step</button>
+        <button id="btn-step-next">next step</button>
+        <button id="btn-step-jump">jump step</button>
+
+    </div>
+    <script>
+        var ispringPresentationConnector = {};
+        var msgText = document.getElementById("msg");
+        ispringPresentationConnector.register = function (player) {
+            console.log("ispring initialized.");
+            var presentation = player.presentation();
+            var playbackController = window.playbackController = player.view().playbackController();
+            var slidesCount = presentation.slides().count();
+            console.log("load slides " + slidesCount);
+            initPlaybackControls(playbackController, slidesCount);
+        };
+
+        function initPlaybackControls(playbackController, slidesCount) {
+            var prevBtn = document.getElementById("button-prev");
+            prevBtn.onclick = function () {
+                //上一张
+                playbackController.gotoPreviousSlide();
+                showDocData();
+            };
+
+            var nextBtn = document.getElementById("button-next");
+            nextBtn.onclick = function () {
+                //下一张
+                playbackController.gotoNextSlide();
+                showDocData();
+            };
+            var jumpBtn = document.getElementById("button-jump");
+            jumpBtn.onclick = function () {
+                //跳转
+                playbackController.gotoSlide(2, true);
+            };
+
+            //  init step 
+            var prevStepBtn = document.getElementById("btn-step-pre");
+            prevStepBtn.onclick = function () {
+                //上一步
+                playbackController.gotoPreviousStep();
+                showDocData();
+            };
+
+            var nextStepBtn = document.getElementById("btn-step-next");
+            nextStepBtn.onclick = function () {
+                //下一步
+                playbackController.gotoNextStep();
+                showDocData();
+            };
+
+            var jumpStepBtn = document.getElementById("btn-step-jump");
+            jumpStepBtn.onclick = function () {
+                playbackController.gotoTimestamp(3, 1, 0, true);
+            };
+
+            var slideNoLabel = document.getElementById("current-slide");
+            playbackController.slideChangeEvent().addHandler(function (slideIndex) {
+                window.slideIndex = slideIndex;
+                window.stepIndex = playbackController.currentStepIndex();
+                console.info('in showDocData,slideIndex:', slideIndex);
+                console.info('in showDocData,_stepIndex:', stepIndex);
+                //slideNoLabel.innerHTML = "<span>"+valueText + "</span>";
+                // console.log(valueText);
+            });
+            playbackController.currentSlideIndex();
+            playbackController.stepChangeEvent().addHandler(function (stepIndex) {
+                window.stepIndex = stepIndex;
+                window.slideIndex = playbackController.currentSlideIndex();
+                console.info('in showDocData,slideIndex:', slideIndex);
+                console.info('in showDocData,_stepIndex:', stepIndex);
+                // console.log("Current step has been changed: " + stepIndex + " page: " + playbackController.currentSlideIndex());
+            });
+            console.log("initPlaybackControls completed.");
+        }
+
+
+    </script>
+    <script src="./dist/board-core.js"></script>
+    <script>
+        var m;
+        var originw;
+        var originh;
+        window.onload = function () {
+            m = new boardCore.default(root);
+            txtData.value = '{"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}';
+            m.on("add", function (a) {
+                setDocData(a);
+                setPenData(a);
+                console.log(a);
+            });
+            originw = 450;
+            originh = 800;
+            nodesResize(originw, originh);
+            m.clearAll();
+
+            pencilInit();
+        }
+        function setBoardSize() {
+            var x = document.getElementById("xpos").value;
+            // var y = document.getElementById("ypos").value;
+            // m.setSize(x, y);// m.setSize(x, y);
+            var y = x * originh / originw;//16 / 9;
+            nodesResize(x, y);
+
+        }
+
+        function setBackgroundColor() {
+            var color = document.getElementById("bgColor").value;
+            m.setBackgroundColor(color);
+        }
+
+        function setPencilOption() {
+            changeCursorState(false);
+            var color = penColorPicker.value;
+            var size = cbbPenSize.value;
+            m.setBoardOption(color, size, "");
+            m.setPencil();
+            window.penSelected = {
+                color: color,
+                size: size
+            }
+        }
+
+        function setEraseOption() {
+            var size = cbbEraseSize.value;
+            m.setBoardOption("", size, "");
+            m.setErase();
+        }
+
+        function undo() {
+            m.undo();
+        }
+
+        function redo() {
+            m.redo();
+        }
+
+        function clearAll() {
+            m.clearAll();
+        }
+
+        function setJSONData(str) {
+            var str = txtData.value;
+            m.setBoardData(str);
+        }
+
+        function setTextOption() {
+            var color = fontColorPicker.value;
+            var size = cbbFontSize.value;
+            var content = txtContent.value;
+            m.setBoardOption(color, size, content);
+            m.setText();
+        }
+
+    </script>
+    <script>
+        var fileHash = "fileHash";
+        var slideIndex = 0, stepIndex = 0;
+        var penData = [],
+            docData = {};
+        var penSelected = {
+
+        };
+
+        function nextSlide() {
+
+        }
+
+        function preStep() {
+
+        }
+
+        function penInit() {
+            Object.keys(window.penSelected).length > 0
+                &&
+                m.setBoardOption(window.penSelected.color, window.penSelected.size, "");
+            m.setPencil();
+        }
+
+        function setDocData(d) {
+            var _fileHash = window.fileHash,
+                _slideIndex = window.slideIndex,
+                _stepIndex = window.stepIndex;
+            docData[_fileHash] = docData[_fileHash] || {};
+            docData[_fileHash][_slideIndex] = docData[_fileHash][_slideIndex] || [];
+
+            // docData[_fileHash][_slideIndex][_stepIndex] = docData[_fileHash][_slideIndex][_stepIndex] || [];
+
+            // console.info('in showDocData,slideIndex:',_slideIndex);
+            // console.info('in showDocData,_stepIndex:',_stepIndex);
+            // docData[_fileHash][_slideIndex][_stepIndex].push(d);
+            docData[_fileHash][_slideIndex].push(d);
+        }
+
+        function setPenData(str) {
+            var dataKey = window.btoa(str);
+            if (penData.indexOf('dataKey') == -1) {
+                penData.push({
+                    k: dataKey,
+                    d: str
+                });
+            };
+        }
+
+        function showPenData() {
+            for (var i = 0; i < penData.length; i++) {
+                m.setBoardData(penData[i].d);
+            }
+        }
+
+        function showDocData() {
+            if (window.stepIndex <= 0) {
+                m.clearAll();
+                // penInit();
+            }
+            setTimeout(function () {
+                var _fileHash = window.fileHash,
+                    _slideIndex = window.slideIndex,
+                    _stepIndex = window.stepIndex;
+                docData[_fileHash] = docData[_fileHash] || {};
+                docData[_fileHash][_slideIndex] = docData[_fileHash][_slideIndex] || [];
+
+                // docData[_fileHash][_slideIndex][_stepIndex] = docData[_fileHash][_slideIndex][_stepIndex] || [];
+
+                // var _d =docData[_fileHash][_slideIndex][_stepIndex];
+                // var idx = docData[_fileHash][_slideIndex];
+                // var stp = docData[_fileHash][_slideIndex][_stepIndex];
+
+                // console.info('in showDocData,slideIndex:',_slideIndex);
+                // console.info('in showDocData,_stepIndex:',_stepIndex);
+                // for(var k in docData[_fileHash][_slideIndex]){
+
+                // }
+                var _d = docData[_fileHash][_slideIndex];
+                for (var i = 0; i < _d.length; i++) {
+                    m.setBoardData(_d[i]);
+                    console.log(_d[i]);
+                }
+            }, 50);
+        }
+
+        function setCanvasSize(w, h) {
+            var el = document.getElementById('root');
+            el.setAttribute("width", w);
+            el.setAttribute("height", h);
+        }
+
+
+        function onBoxResize(elObj, callback) {
+            var el = elObj;
+            var w,
+                h;
+            el.addEventListener('mousedown', function (e) {
+                w = el.offsetWidth;
+                h = el.offsetHeight;
+            }, true);
+            el.addEventListener('mouseup', function (e) {
+                var _w = el.offsetWidth,
+                    _h = el.offsetHeight;
+                if (_w != w || _h != h) {
+                    callback();
+                }
+            });
+        }
+
+        function nodesResize(width, height) {
+            var canvas = document.getElementById('root'),
+                frame = document.getElementById('presentation');
+            parent = canvas.parentNode;
+            // width = parent.offsetWidth,
+            // height = parent.offsetHeight;
+            canvas.setAttribute('width', width - 10);
+            canvas.setAttribute('height', height - 10);
+            frame.setAttribute('width', width - 10);
+            frame.setAttribute('height', height - 10);
+            canvas.style.width = width - 10 + 'px';
+            canvas.style.height = height - 10 + 'px';
+            frame.style.width = width - 10 + 'px';
+            frame.style.height = height - 10 + 'px';
+            parent.setAttribute('width', width - 10);
+            parent.setAttribute('height', height - 10);
+            parent.style.width = width - 10 + 'px';
+            parent.style.height = height - 10 + 'px';
+            try {
+                console.log(width, height);
+                m.setSize(width, height);
+            } catch (e) { }
+            showDocData();
+
+            document.getElementById("xpos").value = width;
+            document.getElementById("ypos").value = height;
+        }
+
+        function _goNextStep() {
+            window.playbackController.gotoNextStep();
+            showDocData();
+        }
+
+        function changeCursorState(isHand) {
+            var _root = document.getElementById('root');
+            if (isHand) {
+                _root.addEventListener('click', _goNextStep, false);
+                m.cancelOperate();
+            } else {
+                _root.removeEventListener('click', _goNextStep, false);
+            }
+        }
+
+        var readyCallback = function () {
+            console.log('in vhall readyEvent!');
+            window.VhallDoc.init({
+                roomId: 'lss_cc29923b', //房间ID
+                docId: 'd4403109',//文档id
+                docNode: '',//文档显示节点div id
+                complete: function (res) {
+                    // console.dir(res);
+                    var imgsNode = document.getElementById('img-list');
+                    for (var i = 0; i < res.thumImgs.length; i++) {
+                        var img = document.createElement('img');
+                        img.src = res.thumImgs[i];
+                        imgsNode.appendChild(img);
+                    }
+
+                    var f = document.getElementById('presentation');
+                    f.setAttribute('src', res.frameUrl);
+                }
+            })
+        };
+
+        // window.Vhall.ready(readyCallback);
+
+        // window.Vhall.config({
+        //      appId :'9320432d',//应用 ID ,必填
+        //      accountId :'100001',//第三方用户唯一标识,必填
+        //      roomId:'lss_cc29923b',//房间ID,bi tian
+        //      token:'a9701973',//token必填
+        //  });
+
+        function pencilInit() {
+
+            var pNode = document.getElementById('root').parentNode;
+            onBoxResize(pNode, function () {
+                nodesResize(pNode.width, pNode.height);
+            });
+            // window.addEventListener('resize', function () {
+            //     nodesResize(pNode.width,pNode.height);
+            // }, true);
+            // setTimeout(function () {
+            //     nodesResize(pNode.width, pNode.height);
+            // }, 1000);
+
+            var setPageDown = document.getElementById('set-pagedown');
+            changeCursorState(true);
+            setPageDown.onclick = function () {
+                changeCursorState(true);
+            };
+        }
+
+    </script>
 </body>
 
 </html>

@@ -1,9 +1,9 @@
 import { ICommand } from "./cmdInterface";
 import BoardOption from "./option";
-import { isNullOrUndefined } from "util";
 import { Point } from "../interfaces";
+import Constants from "../constants";
 
-export abstract class AbstractCommand implements ICommand {
+export default abstract class AbstractCommand implements ICommand {
     ctx: CanvasRenderingContext2D;
     root: HTMLCanvasElement;
     data: any;
@@ -46,7 +46,9 @@ export abstract class AbstractCommand implements ICommand {
     toJSON(): string {
         this.data["path"] = this.path;
         this.data["opt"] = this.opt;
-        this.data['stamp'] = new Date().getTime();
+        this.data['stamp'] = new Date().getTime().toString();
+        this.data['ow'] = Constants.OriginWidth;
+        this.data['oh'] = Constants.OriginHeight;
         return JSON.stringify(this.data);
     }
 
@@ -68,6 +70,11 @@ export abstract class AbstractCommand implements ICommand {
             this.path.push(Point.from(val));
         });
         this.opt = BoardOption.fromObj(o['opt']);
+        Constants.OriginWidth = o['ow'];
+        Constants.OriginHeight = o['oh'];
+        var w: number = this.root.width;
+        var h: number = this.root.height;
+        Constants.Ratio = Math.min(w / Constants.OriginWidth, h / Constants.OriginHeight);
     }
 
     drawByJSON() {

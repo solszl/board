@@ -1,4 +1,4 @@
-import { AbstractCommand } from "./absCommand";
+import AbstractCommand from "./absCommand";
 
 export default class BgColorCommand extends AbstractCommand {
     constructor(root: HTMLCanvasElement) {

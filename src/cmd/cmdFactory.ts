@@ -1,9 +1,11 @@
-import { CommandEnum } from "./CommandEnum";
+import { CommandEnum } from "./commandEnum";
 import ClearCommand from "./clearCommand";
-import { AbstractCommand } from "./absCommand";
+import AbstractCommand from "./absCommand";
 import EraserCommand from "./eraserCommand";
 import PenCommand from "./penCommand";
 import TextCommand from "./textCommand";
+import UndoCommand from "./undoCommand";
+import RedoCommand from "./redoCommand";
 
 export class CommandFactory {
     static getCommand(type: string, root: HTMLCanvasElement): AbstractCommand {
@@ -21,6 +23,12 @@ export class CommandFactory {
                 break;
             case CommandEnum.TEXT:
                 cmd = new TextCommand(root);
+                break;
+            case CommandEnum.UNDO:
+                cmd = new UndoCommand(root);
+                break;
+            case CommandEnum.REDO:
+                cmd = new RedoCommand(root);
                 break;
             default:
                 cmd = new ClearCommand(root);
