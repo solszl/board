@@ -22,6 +22,7 @@ export default class EraserCommand extends AbstractCommand {
     complete() {
         super.complete();
         this.ctx.globalCompositeOperation = "source-over";
+        this.path = [];
     }
 
     protected onMouseDownHandler(e: MouseEvent): void {
@@ -40,6 +41,7 @@ export default class EraserCommand extends AbstractCommand {
         this.ctx.moveTo(p.$x, p.$y);
         this.ctx.lineTo(p.$x, p.$y);
         this.ctx.stroke();
+        this.path = [];
         this.path.push(p.normalized());
     }
 
