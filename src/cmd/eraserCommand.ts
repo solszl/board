@@ -36,7 +36,11 @@ export default class EraserCommand extends AbstractCommand {
         this.ctx.lineJoin = "round";
         this.ctx.globalCompositeOperation = "destination-out";
         this.ctx.beginPath();
-        this.path.push(new Point(e.layerX, e.layerY).normalized());
+        var p: Point = new Point(e.layerX, e.layerY);
+        this.ctx.moveTo(p.$x, p.$y);
+        this.ctx.lineTo(p.$x, p.$y);
+        this.ctx.stroke();
+        this.path.push(p.normalized());
     }
 
     protected onMouseMovehandler(e: MouseEvent): void {

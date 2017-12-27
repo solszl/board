@@ -106,9 +106,9 @@
         <input type="button" value="Confirm" onclick="setJSONData()" />
         <button id="set-pagedown">翻页</button>
     </div>
-    <div id="container" style="width:450px;height:800px;resize: both;overflow: auto;border:1px solid black;">
-        <iframe id="presentation" src="./public/presentation.html" width="450px" height="800px" style="position: absolute; z-index: -1;"></iframe>
-        <canvas id="root" width="450px" height="800px" style="background: rgba(255,255,155,0);"></canvas>
+    <div id="container" style="width:800px;height:450px;resize: both;overflow: auto;border:1px solid black;">
+        <iframe id="presentation" src="./public/presentation.html" width="800px" height="450px" style="position: absolute; z-index: -1;"></iframe>
+        <canvas id="root" width="800px" height="450px" style="background: rgba(255,255,155,0);"></canvas>
     </div>
     <div class="clear"> </div>
     <div id="img-list">
@@ -218,8 +218,8 @@
                 setPenData(a);
                 console.log(a);
             });
-            originw = 450;
-            originh = 800;
+            originw = 800;
+            originh = 450;
             nodesResize(originw, originh);
             m.clearAll();
 
