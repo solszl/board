@@ -44,6 +44,8 @@ export default class PenCommand extends AbstractCommand {
         var startPos: Point = new Point(e.layerX, e.layerY);
         this.ctx.beginPath();
         this.ctx.moveTo(startPos.$x, startPos.$y);
+        this.ctx.lineTo(startPos.$x, startPos.$y);
+        this.ctx.stroke();
         this.path.push(startPos.normalized());
         // console.log("Point.scale:" +Constants.Ratio);
         // var layerPoint: Point = new Point(e.layerX, e.layerY);
