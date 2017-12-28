@@ -29,6 +29,7 @@ export default class Main {
         }
 
         console.log("BoardCore initialized");
+
         this.root = e;
         this.ctx = this.root.getContext("2d") as CanvasRenderingContext2D;
         // 设置背景色，保存起来状态
@@ -38,6 +39,9 @@ export default class Main {
         this.clearAll();
         Constants.OriginHeight = e.height;
         Constants.OriginWidth = e.width;
+        Constants.OriginXPos = e.offsetLeft;
+        Constants.OriginYPos = e.offsetTop;
+        Constants.OriginPoint = new Point(Constants.OriginXPos, Constants.OriginYPos);
         UndoManager.getInstance().push(this.ctx.getImageData(0, 0, this.root.width, this.root.height));
     }
 

@@ -20,6 +20,9 @@ export class Point {
         return `{x: ${this.x}, y: ${this.y}}`;
     }
 
+    distance(target: Point): Point {
+        return new Point(this.$x - target.$x, this.$y - target.$y);
+    }
     public set $x(val: number) {
         this.x = this.fomatFloat(val);
     }

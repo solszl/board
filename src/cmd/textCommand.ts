@@ -35,7 +35,7 @@ export default class TextCommand extends AbstractCommand {
         super.onMouseDownHandler(e);
         this.bmd = this.ctx.getImageData(0, 0, this.root.width, this.root.height);
         var str: string = this.opt.content;
-        var p: Point = new Point(e.layerX, e.layerY);
+        var p: Point = new Point(e.pageX, e.pageY).distance(Constants.OriginPoint);
         this.ctx.fillText(str, p.$x, p.$y);
     }
 
@@ -43,14 +43,14 @@ export default class TextCommand extends AbstractCommand {
         super.onMouseMovehandler(e);
         this.ctx.putImageData(this.bmd, 0, 0);
         var str: string = this.opt.content;
-        var p: Point = new Point(e.layerX, e.layerY);
+        var p: Point = new Point(e.pageX, e.pageY).distance(Constants.OriginPoint);
         this.ctx.fillText(str, p.$x, p.$y);
     }
 
     private endPoint: Point;
     protected onMouseUpHandler(e: MouseEvent): void {
         super.onMouseUpHandler(e);
-        this.endPoint = new Point(e.layerX, e.layerY);
+        this.endPoint = new Point(e.pageX, e.pageY).distance(Constants.OriginPoint);
         this.path.push(this.endPoint.normalized());
         this.complete();
         UndoManager.getInstance().push(this.getImageData());
