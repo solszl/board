@@ -6,6 +6,8 @@ import PenCommand from "./penCommand";
 import TextCommand from "./textCommand";
 import UndoCommand from "./undoCommand";
 import RedoCommand from "./redoCommand";
+import RectCommand from "./rectCommand";
+import CircleCommand from "./circleCommand";
 
 export class CommandFactory {
     static getCommand(type: string, root: HTMLCanvasElement): AbstractCommand {
@@ -29,6 +31,12 @@ export class CommandFactory {
                 break;
             case CommandEnum.REDO:
                 cmd = new RedoCommand(root);
+                break;
+            case CommandEnum.RECT:
+                cmd = new RectCommand(root);
+                break;
+            case CommandEnum.CIRCLE:
+                cmd = new CircleCommand(root);
                 break;
             default:
                 cmd = new ClearCommand(root);
