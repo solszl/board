@@ -123,5 +123,30 @@ export default class Main {
 
     clearAll() {
         this.ctx.clearRect(0, 0, this.root.width, this.root.height);
+        if (this.background) {
+            this.ctx.drawImage(this.background, 0, 0, this.root.width, this.root.height);
+        }
+    }
+
+    changeElement(e: HTMLCanvasElement) {
+        this.root = e;
+        this.ctx = this.root.getContext("2d") as CanvasRenderingContext2D;
+        // 设置背景色，保存起来状态
+        this.ctx.fillStyle = "rgba(255,255,255,0)";
+        // this.ctx.fillRect(0, 0, this.root.width, this.root.height);
+        // this.setSize(this.root.width, this.root.height);
+        this.clearAll();
+        Constants.OriginHeight = e.height;
+        Constants.OriginWidth = e.width;
+        Constants.OriginXPos = e.offsetLeft;
+        Constants.OriginYPos = e.offsetTop;
+        Constants.OriginPoint = new Point(Constants.OriginXPos, Constants.OriginYPos);
+    }
+
+    background: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement;
+    setBackground(el: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement) {
+        if (!!el) {
+            this.background = el;
+        }
     }
 }
