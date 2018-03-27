@@ -92,8 +92,9 @@ export default class PenCommand extends AbstractCommand {
 
             this.path.forEach((val, idx, arr) => {
                 this.ctx.lineTo(val.$x * Constants.Ratio, val.$y * Constants.Ratio);
-                this.ctx.stroke();
-            })
+            });
+
+            this.ctx.stroke();
         }
         UndoManager.getInstance().push(this.getImageData());
     }
