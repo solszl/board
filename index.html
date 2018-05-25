@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
     <title>test for ispring</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
         #presentation {
             width: 864px;
             height: 540px;
@@ -106,9 +111,13 @@
         <input type="button" value="Confirm" onclick="setJSONData()" />
         <button id="set-pagedown">翻页</button>
     </div>
-    <div id="container" style="width:800px;height:450px;resize: both;overflow: auto;border:1px solid black; float:right">
-        <iframe id="presentation" src="./public/presentation.html" width="800px" height="450px" style="position: absolute; z-index: -1;"></iframe>
-        <canvas id="root" width="800px" height="450px" style="background: rgba(255,255,155,0);"></canvas>
+    <div style="position: relative;">
+        <!-- -->
+        <!-- <div style="position: relative; width: 100px;height:100px; background-color: dodgerblue">aaaaaaaa</div> -->
+        <div id="container" style="width:800px;height:450px;resize: both;overflow: auto;border:1px solid black;">
+            <iframe id="presentation" src="./public/presentation.html" width="800px" height="450px" style="position: absolute; z-index: -1;"></iframe>
+            <canvas id="root" width="800px" height="450px" style="background: rgba(255,255,155,0);"></canvas>
+        </div>
     </div>
     <div class="clear"> </div>
     <div id="img-list">
@@ -129,12 +138,11 @@
         <button id="btn-step-pre">prev step</button>
         <button id="btn-step-next">next step</button>
         <button id="btn-step-jump">jump step</button>
-
     </div>
     <script>
         var ispringPresentationConnector = {};
         var msgText = document.getElementById("msg");
-        ispringPresentationConnector.register = function (player) {
+        ispringPresentationConnector.register = function(player) {
             console.log("ispring initialized.");
             var presentation = player.presentation();
             var playbackController = window.playbackController = player.view().playbackController();
@@ -145,46 +153,46 @@
 
         function initPlaybackControls(playbackController, slidesCount) {
             var prevBtn = document.getElementById("button-prev");
-            prevBtn.onclick = function () {
+            prevBtn.onclick = function() {
                 //上一张
                 playbackController.gotoPreviousSlide();
                 showDocData();
             };
 
             var nextBtn = document.getElementById("button-next");
-            nextBtn.onclick = function () {
+            nextBtn.onclick = function() {
                 //下一张
                 playbackController.gotoNextSlide();
                 showDocData();
             };
             var jumpBtn = document.getElementById("button-jump");
-            jumpBtn.onclick = function () {
+            jumpBtn.onclick = function() {
                 //跳转
                 playbackController.gotoSlide(2, true);
             };
 
             //  init step 
             var prevStepBtn = document.getElementById("btn-step-pre");
-            prevStepBtn.onclick = function () {
+            prevStepBtn.onclick = function() {
                 //上一步
                 playbackController.gotoPreviousStep();
                 showDocData();
             };
 
             var nextStepBtn = document.getElementById("btn-step-next");
-            nextStepBtn.onclick = function () {
+            nextStepBtn.onclick = function() {
                 //下一步
                 playbackController.gotoNextStep();
                 showDocData();
             };
 
             var jumpStepBtn = document.getElementById("btn-step-jump");
-            jumpStepBtn.onclick = function () {
+            jumpStepBtn.onclick = function() {
                 playbackController.gotoTimestamp(3, 1, 0, true);
             };
 
             var slideNoLabel = document.getElementById("current-slide");
-            playbackController.slideChangeEvent().addHandler(function (slideIndex) {
+            playbackController.slideChangeEvent().addHandler(function(slideIndex) {
                 window.slideIndex = slideIndex;
                 window.stepIndex = playbackController.currentStepIndex();
                 console.info('in showDocData,slideIndex:', slideIndex);
@@ -193,7 +201,7 @@
                 // console.log(valueText);
             });
             playbackController.currentSlideIndex();
-            playbackController.stepChangeEvent().addHandler(function (stepIndex) {
+            playbackController.stepChangeEvent().addHandler(function(stepIndex) {
                 window.stepIndex = stepIndex;
                 window.slideIndex = playbackController.currentSlideIndex();
                 console.info('in showDocData,slideIndex:', slideIndex);
@@ -210,10 +218,10 @@
         var m;
         var originw;
         var originh;
-        window.onload = function () {
+        window.onload = function() {
             m = new boardCore.default(root);
             txtData.value = '{"type":"pen_command","path":[{"x":247,"y":165},{"x":248,"y":165},{"x":250,"y":165},{"x":251,"y":165},{"x":252,"y":165},{"x":253,"y":165},{"x":254,"y":165},{"x":255,"y":165},{"x":255,"y":165}],"opt":{"color":"#000000","size":"4","content":""}}';
-            m.on("add", function (a) {
+            m.on("add", function(a) {
                 setDocData(a);
                 setPenData(a);
                 console.log(a);
@@ -343,7 +351,7 @@
                 m.clearAll();
                 // penInit();
             }
-            setTimeout(function () {
+            setTimeout(function() {
                 var _fileHash = window.fileHash,
                     _slideIndex = window.slideIndex,
                     _stepIndex = window.stepIndex;
@@ -380,11 +388,11 @@
             var el = elObj;
             var w,
                 h;
-            el.addEventListener('mousedown', function (e) {
+            el.addEventListener('mousedown', function(e) {
                 w = el.offsetWidth;
                 h = el.offsetHeight;
             }, true);
-            el.addEventListener('mouseup', function (e) {
+            el.addEventListener('mouseup', function(e) {
                 var _w = el.offsetWidth,
                     _h = el.offsetHeight;
                 if (_w != w || _h != h) {
@@ -436,13 +444,13 @@
             }
         }
 
-        var readyCallback = function () {
+        var readyCallback = function() {
             console.log('in vhall readyEvent!');
             window.VhallDoc.init({
                 roomId: 'lss_cc29923b', //房间ID
                 docId: 'd4403109',//文档id
                 docNode: '',//文档显示节点div id
-                complete: function (res) {
+                complete: function(res) {
                     // console.dir(res);
                     var imgsNode = document.getElementById('img-list');
                     for (var i = 0; i < res.thumImgs.length; i++) {
@@ -469,7 +477,7 @@
         function pencilInit() {
 
             var pNode = document.getElementById('root').parentNode;
-            onBoxResize(pNode, function () {
+            onBoxResize(pNode, function() {
                 nodesResize(pNode.width, pNode.height);
             });
             // window.addEventListener('resize', function () {
@@ -481,7 +489,7 @@
 
             var setPageDown = document.getElementById('set-pagedown');
             changeCursorState(true);
-            setPageDown.onclick = function () {
+            setPageDown.onclick = function() {
                 changeCursorState(true);
             };
         }

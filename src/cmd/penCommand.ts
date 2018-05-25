@@ -41,13 +41,13 @@ export default class PenCommand extends AbstractCommand {
         this.ctx.lineJoin = "round";
         // 像素叠加属性 from:https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
         this.ctx.globalCompositeOperation = "source-over";
-        var startPos: Point = new Point(e.pageX, e.pageY).distance(Constants.OriginPoint);
+        var startPos: Point = new Point(e.offsetX, e.offsetY).distance(Constants.OriginPoint);
         this.ctx.beginPath();
         this.ctx.moveTo(startPos.$x, startPos.$y);
         this.ctx.lineTo(startPos.$x, startPos.$y);
         this.ctx.stroke();
         this.path.push(startPos.normalized());
-        // console.log("Point.scale:" +Constants.Ratio);
+        // console.log("Point.scale:" + Constants.Ratio);
         // var layerPoint: Point = new Point(e.layerX, e.layerY);
         // console.log("layer: " + layerPoint.toString() + layerPoint.normalized().toString());
         // var offsetPoint: Point = new Point(e.offsetX, e.offsetY);
@@ -60,7 +60,7 @@ export default class PenCommand extends AbstractCommand {
 
     protected onMouseMovehandler(e: MouseEvent): void {
         super.onMouseMovehandler(e);
-        var p: Point = new Point(e.pageX, e.pageY).distance(Constants.OriginPoint);
+        var p: Point = new Point(e.offsetX, e.offsetY).distance(Constants.OriginPoint);
         this.ctx.lineTo(p.$x, p.$y);
         this.ctx.stroke();
         this.path.push(p.normalized());
@@ -68,7 +68,7 @@ export default class PenCommand extends AbstractCommand {
 
     protected onMouseUpHandler(e: MouseEvent): void {
         super.onMouseUpHandler(e);
-        var p: Point = new Point(e.pageX, e.pageY).distance(Constants.OriginPoint);
+        var p: Point = new Point(e.offsetX, e.offsetY).distance(Constants.OriginPoint);
         this.path.push(p.normalized());
         UndoManager.getInstance().push(this.getImageData());
         VEvent.trigger(VEventEnum.Add, this.toJSON());
