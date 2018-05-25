@@ -41,38 +41,34 @@ export default class PenCommand extends AbstractCommand {
         this.ctx.lineJoin = "round";
         // 像素叠加属性 from:https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
         this.ctx.globalCompositeOperation = "source-over";
-        var startPos: Point = new Point(e.offsetX, e.offsetY);//.distance(Constants.OriginPoint);
+        var startPos: Point = new Point(e.offsetX, e.offsetY);
         this.ctx.beginPath();
         this.ctx.moveTo(e.offsetX, e.offsetY);
         this.ctx.lineTo(e.offsetX, e.offsetY);
         this.ctx.stroke();
-        // this.path.push(startPos.normalized());
         this.path.push(startPos);
-        console.log("Point.scale:" + Constants.Ratio);
-        var layerPoint: Point = new Point(e.layerX, e.layerY);
-        console.log("layer: " + layerPoint.toString() + layerPoint.normalized().toString());
-        var offsetPoint: Point = new Point(e.offsetX, e.offsetY);
-        console.log("offset: " + offsetPoint.toString() + offsetPoint.normalized().toString());
-        var clientPoint: Point = new Point(e.clientX, e.clientY);
-        console.log("client: " + clientPoint.toString() + clientPoint.normalized().toString());
-        var pagePoint: Point = new Point(e.pageX, e.pageY);
-        console.log("Page: " + pagePoint.toString() + pagePoint.normalized().toString());
+        // console.log("Point.scale:" + Constants.Ratio);
+        // var layerPoint: Point = new Point(e.layerX, e.layerY);
+        // console.log("layer: " + layerPoint.toString() + layerPoint.normalized().toString());
+        // var offsetPoint: Point = new Point(e.offsetX, e.offsetY);
+        // console.log("offset: " + offsetPoint.toString() + offsetPoint.normalized().toString());
+        // var clientPoint: Point = new Point(e.clientX, e.clientY);
+        // console.log("client: " + clientPoint.toString() + clientPoint.normalized().toString());
+        // var pagePoint: Point = new Point(e.pageX, e.pageY);
+        // console.log("Page: " + pagePoint.toString() + pagePoint.normalized().toString());
     }
 
     protected onMouseMovehandler(e: MouseEvent): void {
         super.onMouseMovehandler(e);
-        var p: Point = new Point(e.offsetX, e.offsetY);//.distance(Constants.OriginPoint);
-        // this.ctx.lineTo(p.$x + Constants.OriginPoint.$x, p.$y + Constants.OriginPoint.$y);
+        var p: Point = new Point(e.offsetX, e.offsetY);
         this.ctx.lineTo(e.offsetX, e.offsetY);
         this.ctx.stroke();
-        // this.path.push(p.normalized());
         this.path.push(p);
     }
 
     protected onMouseUpHandler(e: MouseEvent): void {
         super.onMouseUpHandler(e);
-        var p: Point = new Point(e.offsetX, e.offsetY);//.distance(Constants.OriginPoint);
-        // this.path.push(p.normalized());
+        var p: Point = new Point(e.offsetX, e.offsetY);
         this.path.push(p);
         UndoManager.getInstance().push(this.getImageData());
         VEvent.trigger(VEventEnum.Add, this.toJSON());

@@ -37,25 +37,25 @@ export default class EraserCommand extends AbstractCommand {
         this.ctx.lineJoin = "round";
         this.ctx.globalCompositeOperation = "destination-out";
         this.ctx.beginPath();
-        var p: Point = new Point(e.pageX, e.pageY).distance(Constants.OriginPoint);
+        var p: Point = new Point(e.offsetX, e.offsetY);
         this.ctx.moveTo(p.$x, p.$y);
         this.ctx.lineTo(p.$x, p.$y);
         this.ctx.stroke();
         this.path = [];
-        this.path.push(p.normalized());
+        this.path.push(p);
     }
 
     protected onMouseMovehandler(e: MouseEvent): void {
         super.onMouseMovehandler(e);
-        var p: Point = new Point(e.pageX, e.pageY).distance(Constants.OriginPoint);
+        var p: Point = new Point(e.offsetX, e.offsetY);
         this.ctx.lineTo(p.$x, p.$y);
         this.ctx.stroke();
-        this.path.push(p.normalized());
+        this.path.push(p);
     }
 
     protected onMouseUpHandler(e: MouseEvent): void {
         super.onMouseUpHandler(e);
-        this.path.push(new Point(e.pageX, e.pageY).distance(Constants.OriginPoint).normalized());
+        this.path.push(new Point(e.offsetX, e.offsetY));
         UndoManager.getInstance().push(this.getImageData());
         VEvent.trigger(VEventEnum.Add, this.toJSON());
     }
