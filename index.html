@@ -111,6 +111,16 @@
         <input type="button" value="Confirm" onclick="setJSONData()" />
         <button id="set-pagedown">翻页</button>
     </div>
+    <div>
+        <label>激光笔宽度</label>
+        <select id="cbbNiteSize">
+            <option value="4">4</option>
+            <option value="8">8</option>
+            <option value="12">12</option>
+            <option value="16">16</option>
+        </select>
+        <button onclick="setNitePen()">confirm</button>
+    </div>
     <!-- <div style="position: relative;"> -->
     <div>
         <!-- <div style="position: relative; width: 100px;height:100px; background-color: dodgerblue">aaaaaaaa</div> -->
@@ -288,6 +298,12 @@
             var content = txtContent.value;
             m.setBoardOption(color, size, content);
             m.setText();
+        }
+
+        function setNitePen() {
+            var size = cbbNiteSize.value;
+            m.setBoardOption("", size, "");
+            m.setNitePencil();
         }
 
     </script>

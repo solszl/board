@@ -87,6 +87,10 @@ export default class Main {
         window.location.href = image;
     }
 
+    setNitePencil(): void {
+        CommandManager.getInstance().execute(CommandEnum.NITE_PEN, this.root, this.opt);
+    }
+
     undo(): void {
         CommandManager.getInstance().execute(CommandEnum.UNDO, this.root, this.opt);
     }
