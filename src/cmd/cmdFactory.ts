@@ -8,6 +8,7 @@ import UndoCommand from "./undoCommand";
 import RedoCommand from "./redoCommand";
 import RectCommand from "./rectCommand";
 import CircleCommand from "./circleCommand";
+import NightPenCommand from "./nitePenCommand";
 
 export class CommandFactory {
     static getCommand(type: string, root: HTMLCanvasElement): AbstractCommand {
@@ -37,6 +38,9 @@ export class CommandFactory {
                 break;
             case CommandEnum.CIRCLE:
                 cmd = new CircleCommand(root);
+                break;
+            case CommandEnum.NITE_PEN:
+                cmd = new NightPenCommand(root);
                 break;
             default:
                 cmd = new ClearCommand(root);
