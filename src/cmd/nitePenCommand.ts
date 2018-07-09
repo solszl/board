@@ -7,6 +7,8 @@ import { UndoManager } from "../manager/undoManager";
 import { VEvent, VEventEnum } from "../events/events";
 
 export default class NightPenCommand extends PenCommand {
+
+    lastPaintTime: number;
     constructor(root: HTMLCanvasElement) {
         super(root);
         this.type = CommandEnum.NITE_PEN;
@@ -19,9 +21,14 @@ export default class NightPenCommand extends PenCommand {
 
     complete() {
         super.complete();
+        // 取消外发光
+        this.ctx.shadowColor = "transparent";
     }
 
     protected onMouseDownHandler(e: MouseEvent): void {
+        if (new Date().getTime() - this.lastPaintTime < 1000) {
+            return;
+        }
         super.onMouseDownHandler(e);
         UndoManager.getInstance().push(this.getImageData());
         this.path = [];
@@ -37,12 +44,12 @@ export default class NightPenCommand extends PenCommand {
         this.ctx.lineJoin = "round";
         // 像素叠加属性 from:https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
         this.ctx.globalCompositeOperation = "source-over";
-        var startPos: Point = new Point(e.offsetX, e.offsetY);
-        this.ctx.beginPath();
-        this.ctx.moveTo(e.offsetX, e.offsetY);
-        this.ctx.lineTo(e.offsetX, e.offsetY);
-        this.ctx.stroke();
-        this.path.push(startPos);
+        // var startPos: Point = new Point(e.offsetX, e.offsetY);
+        // this.ctx.beginPath();
+        // this.ctx.moveTo(e.offsetX, e.offsetY);
+        // this.ctx.lineTo(e.offsetX, e.offsetY);
+        // this.ctx.stroke();
+        // this.path.push(startPos);
     }
 
     // protected onMouseMovehandler(e: MouseEvent): void {
@@ -50,9 +57,10 @@ export default class NightPenCommand extends PenCommand {
     // }
 
     protected onMouseUpHandler(e: MouseEvent): void {
+        this.lastPaintTime = new Date().getTime();
         // super.onMouseUpHandler(e);
-        var p: Point = new Point(e.offsetX, e.offsetY);
-        this.path.push(p);
+        // var p: Point = new Point(e.offsetX, e.offsetY);
+        // this.path.push(p);
         this.root.removeEventListener("mousemove", this.mm);
         this.root.removeEventListener("mouseup", this.mu);
         this.root.addEventListener("mousedown", this.md);
