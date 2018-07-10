@@ -21,10 +21,10 @@ export class DataManager {
 
     setData(data: string, root: HTMLCanvasElement) {
         var obj: any = JSON.parse(data);
-        if (!!!obj)
+        if (!obj)
             return;
         var cmd: AbstractCommand = CommandFactory.getCommand(obj["type"], root);
-        if (!!!cmd)
+        if (!cmd)
             return;
 
         cmd.fromJSON(data);

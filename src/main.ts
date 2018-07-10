@@ -107,6 +107,21 @@ export default class Main {
         DataManager.getInstance().setData(data, this.root);
     }
 
+    setBoardAllData(allData: Array<string>): void {
+        if (allData.length == 0) {
+            return;
+        }
+
+        for (let i = 0; i < allData.length; i++) {
+            let data: string = allData[i];
+            let convertObj = JSON.parse(data);
+            if (convertObj && convertObj.type == CommandEnum.NITE_PEN) {
+                continue;
+            }
+            DataManager.getInstance().setData(data, this.root);
+        }
+    }
+
     /** 取消所有操作*/
     cancelOperate() {
         if (!!CommandManager.getInstance().lastCMD)

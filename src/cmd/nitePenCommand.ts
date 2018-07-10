@@ -94,6 +94,7 @@ export default class NightPenCommand extends PenCommand {
 
             this.ctx.stroke();
         }
+        this.ctx.shadowColor = "transparent";
 
         setTimeout(() => {
             let bmd: ImageData | undefined = UndoManager.getInstance().undo();
