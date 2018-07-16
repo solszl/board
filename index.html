@@ -385,11 +385,14 @@
                 // for(var k in docData[_fileHash][_slideIndex]){
 
                 // }
+                // 2018-07-16
                 var _d = docData[_fileHash][_slideIndex];
-                for (var i = 0; i < _d.length; i++) {
-                    m.setBoardData(_d[i]);
-                    console.log(_d[i]);
-                }
+                // for (var i = 0; i < _d.length; i++) {
+                //     m.setBoardData(_d[i]);
+                //     console.log(_d[i]);
+                // }
+
+                m.setBoardAllData(_d);
             }, 50);
         }
 

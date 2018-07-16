@@ -85,6 +85,7 @@ export default class PenCommand extends AbstractCommand {
         this.ctx.lineJoin = "round";
         this.ctx.lineCap = "round";
         this.ctx.globalCompositeOperation = "source-over";
+        this.ctx.shadowColor = "transparent";
         this.ctx.beginPath();
 
         if (this.path.length > 1) {
