@@ -108,6 +108,9 @@ export default class Main {
     }
 
     setBoardAllData(allData: Array<string>): void {
+        this.clearAll();
+        UndoManager.getInstance().push(this.ctx.getImageData(0, 0, this.root.width, this.root.height));
+
         if (allData.length == 0) {
             return;
         }
