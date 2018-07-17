@@ -42,7 +42,6 @@ export default class Main {
         Constants.OriginXPos = e.offsetLeft;
         Constants.OriginYPos = e.offsetTop;
         Constants.OriginPoint = new Point(Constants.OriginXPos, Constants.OriginYPos);
-        UndoManager.getInstance().push(this.ctx.getImageData(0, 0, this.root.width, this.root.height));
     }
 
     /**
@@ -109,7 +108,6 @@ export default class Main {
 
     setBoardAllData(allData: Array<string>): void {
         this.clearAll();
-        UndoManager.getInstance().push(this.ctx.getImageData(0, 0, this.root.width, this.root.height));
 
         if (allData.length == 0) {
             return;
@@ -145,9 +143,11 @@ export default class Main {
 
     clearAll() {
         this.ctx.clearRect(0, 0, this.root.width, this.root.height);
+
         if (this.background) {
             this.ctx.drawImage(this.background, 0, 0, this.root.width, this.root.height);
         }
+        UndoManager.getInstance().push(this.ctx.getImageData(0, 0, this.root.width, this.root.height));
     }
 
     changeElement(e: HTMLCanvasElement) {
