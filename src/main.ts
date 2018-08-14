@@ -52,7 +52,7 @@ export default class Main {
      * @memberof Main
      */
     setSize(w: number, h: number): void {
-        this.clearAll();
+        this.ctx.clearRect(0, 0, this.root.width, this.root.height);
         this.root.width = w;
         this.root.height = h;
         Constants.Ratio = Math.min(w / Constants.OriginWidth, h / Constants.OriginHeight);
